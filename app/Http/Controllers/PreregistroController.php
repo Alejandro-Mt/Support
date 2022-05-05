@@ -66,7 +66,7 @@ class PreregistroController extends Controller
         $archivos = archivo::where ('folio', $folio)->get();
         foreach ($coordinacion as $c){
             mail::to($data['correo'])
-                ->cc($c->email)
+                ->cc(explode(',', $c->email))
                 ->send(new SolicitudRequerimiento($folio));
             #dd($c->email);
             if($data['adjunto'] == 'true'){
