@@ -253,6 +253,7 @@
                 @foreach ($comentarios as $comentario)
                   @if($comentario->id_estatus == $avance->id_estatus)
                     @if($comentario->id_estatus == 17)
+                    @section('comentarios')
                       @if ($comentario->respuesta == 'No')
                         <div class="d-flex flex-row comment-row border-bottom p-3">
                           <div class="p-2">
@@ -327,6 +328,7 @@
                           </div>
                         </div>
                       @endif
+                    @endsection
                     @else
                       @if($comentario->id_estatus == 10)
                         @if ($comentario->respuesta == 'No')
@@ -406,6 +408,8 @@
                         @endif
                       @else
                         @if($comentario->id_estatus == 16)
+                          @yield('comentarios')
+                        @else
                           {{$comentario->id_estatus}}
                         @endif
                       @endif
