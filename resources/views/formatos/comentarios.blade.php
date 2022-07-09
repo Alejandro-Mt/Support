@@ -330,7 +330,7 @@
                       @endif
                     @endsection
                     @else
-                      @if($comentario->id_estatus == 10)
+                      @if($comentario->id_estatus == 16)
                         @if ($comentario->respuesta == 'No')
                           <div class="d-flex flex-row comment-row border-bottom p-3">
                             <div class="p-2">
@@ -411,7 +411,7 @@
                       @endif
                     @endif
                   @else 
-                    @if($comentario->id_estatus == 16)
+                    @if($comentario->id_estatus == 10)
                       @yield('comentarios')
                     @else
                       {{$comentario->id_estatus}}
