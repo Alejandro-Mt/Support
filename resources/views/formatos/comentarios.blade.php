@@ -413,6 +413,7 @@
                   @else 
                     @if($comentario->id_estatus == 10)
                       @yield('comentarios')
+                      comentarios
                     @else
                       {{$comentario->id_estatus}}
                     @endif
