@@ -328,7 +328,7 @@
                         </div>
                       @endif
                     @else
-                      @if($comentario->id_estatus == 10 || $comentario->id_estatus == 16)
+                      @if($comentario->id_estatus == 10)
                         @if ($comentario->respuesta == 'No')
                           <div class="d-flex flex-row comment-row border-bottom p-3">
                             <div class="p-2">
@@ -405,11 +405,13 @@
                           </div>
                         @endif
                       @else
-                        {{$comentario->id_estatus}}
+                        @if($comentario->id_estatus == 16)
+                          {{$comentario->id_estatus}}
+                        @endif
                       @endif
                     @endif
                   @else 
-                  {{"($comentario->id_estatus == $avance->id_estatus"}}
+                  {{"$comentario->id_estatus == $avance->id_estatus"}}
                   @endif  
                 @endforeach
               </div>
