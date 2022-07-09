@@ -407,15 +407,15 @@
                           </div>
                         @endif
                       @else
-                        @if($comentario->id_estatus == 16)
-                          @yield('comentarios')
-                        @else
-                          {{$comentario->id_estatus}}
-                        @endif
+                        {{"$comentario->id_estatus == $avance->id_estatus"}}
                       @endif
                     @endif
                   @else 
-                  {{"$comentario->id_estatus == $avance->id_estatus"}}
+                    @if($comentario->id_estatus == 16)
+                      @yield('comentarios')
+                    @else
+                      {{$comentario->id_estatus}}
+                    @endif
                   @endif  
                 @endforeach
               </div>
