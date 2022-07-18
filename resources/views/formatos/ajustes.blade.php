@@ -1,6 +1,6 @@
 @extends('home')
-<link href="{{asset("assets/libs/magnific-popup/dist/magnific-popup.css")}}" rel="stylesheet"/>
 @section('content')
+<link href="{{asset("assets/libs/magnific-popup/dist/magnific-popup.css")}}" rel="stylesheet"/>
 <form action="{{route('AUser')}}" method="post">
   {{ csrf_field() }}
 <div class="row el-element-overlay">
@@ -55,8 +55,7 @@
                           name="id_puesto[]" 
                           tabindex="-1" 
                           aria-hidden="true" 
-                          required 
-                          autofocus>
+                          required>
                     <option value={{$miembro->id_puesto}}>
                       @foreach ($puestos as $puesto) 
                         @if ($puesto->id_puesto == $miembro->id_puesto) 
@@ -66,7 +65,7 @@
                     </option> 
                     @foreach ($puestos as $puesto)
                       @if ($puesto->jerarquia < $usuario->jerarquia && $puesto->id_puesto < $usuario->id_puesto)
-                        <option value = {{ $puesto->id_puesto }}>{{$puesto->puesto}}</option>;
+                        <option value = {{ $puesto->id_puesto }}>{{$puesto->puesto}}</option>
                       @endif
                     @endforeach                     
                   </select>
@@ -111,7 +110,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-light-success text-white font-medium waves-effect text-start">
+            <button type="button" class="btn btn-light-success text-white font-medium waves-effect text-start">
               Guardar
             </button>
           </div>
