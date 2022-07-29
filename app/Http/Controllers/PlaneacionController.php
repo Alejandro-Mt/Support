@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\analisis;
-use App\Models\bitacora;
 use App\Models\construccion;
 use App\Models\cronograma;
 use App\Models\desfase;
@@ -16,7 +15,6 @@ use App\Models\registro;
 use App\Models\responsable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use PHPUnit\Util\Json;
 
 class PlaneacionController extends Controller
@@ -86,36 +84,6 @@ class PlaneacionController extends Controller
             ]);
         }
         else{
-            $nombre = auth::user()->nombre;
-            $previo = planeacion::select('*')->where('folio',$data['folio'])->get();
-            foreach($previo as $fecha){
-                if(date('y/m/d', strtotime($fecha->fechaCompReqC)) <> $fechaCompReqC){
-                    if(date('y/m/d', strtotime($fecha->fechaCompReqR)) <> $fechaCompReqR){
-                        bitacora::create([
-                            'id_user' => auth::user()->id,
-                            'usuario' => auth::user()->fullname,
-                            'id_estatus' => $data['id_estatus'],
-                            'campo' => 'Fechas de planeación actualizadas'
-                        ]);
-                    }else{
-                        bitacora::create([
-                            'id_user' => auth::user()->id,
-                            'usuario' => auth::user()->fullname,
-                            'id_estatus' => $data['id_estatus'],
-                            'campo' => 'Fecha compromiso cliente'
-                        ]);
-                    }
-                }else{
-                    if(date('y/m/d', strtotime($fecha->fechaCompReqR)) <> $fechaCompReqR){
-                        bitacora::create([
-                            'id_user' => auth::user()->id,
-                            'usuario' => auth::user()->fullname,
-                            'id_estatus' => $data['id_estatus'],
-                            'campo' => 'Fecha compromiso real'
-                        ]);
-                    }
-                }
-            }
             $update = planeacion::select('*')->where('folio',$data['folio'])->first();
             $update->fechaCompReqC = $fechaCompReqC;
             $update->evidencia = $data['evidencia'];
