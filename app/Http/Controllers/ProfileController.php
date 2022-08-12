@@ -45,7 +45,7 @@ class ProfileController extends Controller
                                           )
                                         )
                                     ) as estatus'),
-                                    db::raw('if(r.id_responsable = re.id_responsable, concat(re.nombre_r, re.apellidos),NULL) as responsable'))
+                                    db::raw('if(r.id_responsable = re.id_responsable, concat(re.nombre_r, " ", re.apellidos),NULL) as responsable'))
                                 ->leftJoin('levantamientos as l', 'r.folio', 'l.folio')
                                 ->leftJoin('planeacion as p', 'r.folio', 'p.folio')
                                 ->leftJoin('construccion as c', 'r.folio', 'c.folio')
