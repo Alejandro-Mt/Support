@@ -153,12 +153,12 @@
                                         @foreach ($pausa as $pospuesto)
                                             @if ($registro->folio == $pospuesto->folio)
                                                 @if ($pospuesto->pausa == 2)
-                                                    <button type="button" class="w-100 btn btn-rounded text-dark" data-bs-toggle="modal" data-bs-target="#est{{$loop->iteration}}">
+                                                    <button type="button" class="w-100 btn btn-rounded text-dark" data-bs-toggle="modal" data-bs-target="#est{{$loop->parent->iteration}}">
                                                         <a class="text-danger">{{"POSPUESTO"}}</a>
                                                     </button>
                                                 @else     
                                                     <!-- Full width modal -->
-                                                    <button type="button" class="w-100 btn btn-rounded text-dark" data-bs-toggle="modal" data-bs-target="#est{{$loop->iteration}}">
+                                                    <button type="button" class="w-100 btn btn-rounded text-dark" data-bs-toggle="modal" data-bs-target="#est{{$loop->parent->iteration}}">
                                                         <!--<i data-feather="log-in" class="fill-white m-auto feather-sm text-center d-block text-center"></i>-->
                                                         {{$registro->titulo}}
                                                     </button>
@@ -187,10 +187,10 @@
                                                     <div class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="btnGroupVerticalDrop1">
                                                         @if ($p->pausa == 2 && $p->folio == $registro->folio)
                                                             <a class="dropdown-item" href="{{route('Play',$registro->folio)}}">{{$registro->titulo}}</a>
-                                                            <a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#conf{{$loop->iteration}}">CANCELAR</a>
+                                                            <a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#conf{{$loop->parent->iteration}}">CANCELAR</a>
                                                         @else
                                                             <a class="dropdown-item" href="{{route('Posponer',$registro->folio)}}">POSPONER</a>
-                                                            <a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#conf{{$loop->iteration}}">CANCELAR</a>
+                                                            <a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#conf{{$loop->parent->iteration}}">CANCELAR</a>
                                                         @endif
                                                     </div>
                                                 @endforeach
