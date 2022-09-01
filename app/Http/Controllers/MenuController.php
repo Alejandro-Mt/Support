@@ -39,8 +39,7 @@ class MenuController extends Controller
                             ->join('clientes as c','c.id_cliente','registros.id_cliente')
                             ->leftjoin('levantamientos as l','l.folio', 'registros.folio')
                             ->orderby('registros.id_registro','desc')
-                            ->where('registros.id_estatus','17')
-                            ->paginate(20);
+                            ->where('registros.id_estatus','17');
         $levantamiento = registro::select('registros.*','e.*','c.nombre_cl','l.fechaaut','l.fechades')
                             ->join('clientes as c','c.id_cliente','registros.id_cliente')
                             ->join('estatus as e','e.id_estatus', 'registros.id_estatus')
@@ -56,37 +55,32 @@ class MenuController extends Controller
                             ->orderby('registros.id_registro','desc')
                             ->where('registros.id_estatus','11')
                             ->orwhere('registros.id_estatus','9')
-                            ->orwhere('registros.id_estatus','7')
-                            ->paginate(20);
+                            ->orwhere('registros.id_estatus','7');
         $liberacion = registro::select('registros.*','e.*','c.nombre_cl','l.fechaaut','l.fechades')
                             ->join('clientes as c','c.id_cliente','registros.id_cliente')
                             ->join('estatus as e','e.id_estatus', 'registros.id_estatus')
                             ->leftjoin('levantamientos as l','l.folio', 'registros.folio')
                             ->orderby('registros.id_registro','desc')
-                            ->where('registros.id_estatus','8')
-                            ->paginate(20);
+                            ->where('registros.id_estatus','8');
         $implementacion = registro::select('registros.*','e.*','c.nombre_cl','l.fechaaut','l.fechades')
                             ->join('clientes as c','c.id_cliente','registros.id_cliente')
                             ->join('estatus as e','e.id_estatus', 'registros.id_estatus')
                             ->leftjoin('levantamientos as l','l.folio', 'registros.folio')
                             ->orderby('registros.id_registro','desc')
-                            ->where('registros.id_estatus','2')
-                            ->paginate(20);
+                            ->where('registros.id_estatus','2');
         $implementado = registro::select('registros.*','e.*','c.nombre_cl','l.fechaaut','l.fechades')
                             ->join('clientes as c','c.id_cliente','registros.id_cliente')
                             ->join('estatus as e','e.id_estatus', 'registros.id_estatus')
                             ->leftjoin('levantamientos as l','l.folio', 'registros.folio')
                             ->orderby('registros.id_registro','desc')
-                            ->where('registros.id_estatus','18')
-                            ->paginate(20);
+                            ->where('registros.id_estatus','18');
         $cancelado = registro::select('registros.*','e.*','c.nombre_cl','l.fechaaut','l.fechades')
                             ->join('clientes as c','c.id_cliente','registros.id_cliente')
                             ->join('estatus as e','e.id_estatus', 'registros.id_estatus')
                             ->leftjoin('levantamientos as l','l.folio', 'registros.folio')
                             ->orderby('registros.id_registro','desc')
                             ->where('registros.id_estatus','14')
-                            ->orwhere('registros.id_estatus','13')
-                            ->paginate(20);
+                            ->orwhere('registros.id_estatus','13');
         $pausa = pausa::select('r.folio',pausa::raw('max(pausas.pausa) as pausa'))->rightjoin('registros as r','r.folio', 'pausas.folio')->groupby('r.folio')->get();
         foreach ($pausa as $p);
         $vacio = pausa::count();
