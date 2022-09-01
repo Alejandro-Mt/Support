@@ -280,4 +280,3 @@
     </tbody>
   </table>
 </div>
-{{ $requerimiento->links() }}
