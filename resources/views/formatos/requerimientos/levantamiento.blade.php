@@ -1,13 +1,10 @@
 @extends('home')
 @section('content')
-
     <div class="card">
         <div class="box bg-danger text-center">
-        <!--<h5 class="font-light text-white"><i class="mdi mdi-view-dashboard"></i></h5>-->
             <h3 class="text-white">LEVANTAMIENTO</h3>
         </div>
         <div class="card-body wizard-content">
-            <!--<h4 class="card-title">Levantamiento</h4>-->
             <h6 class="card-subtitle"></h6>
             <form method="POST" action="{{route ('Actualizar')}}" class="mt-5">
                 {{ csrf_field() }}
@@ -66,34 +63,6 @@
                                 </select>
                             </div>
                         </div>
-                        <!--<div class="form-group row">
-                            <label for="jefe_departamento"
-                                class="col-sm-2 text-end control-label col-form-label">Jefe de Departamento</label>
-                            <div class="col-md-8">  
-                                <select class="form-select @error('jefe_departamento') is-invalid @enderror" 
-                                    style="width: 100%; height:36px;" name="jefe_departamento" tabindex="-1" aria-hidden="true" required autofocus>
-                                    @foreach ($levantamientos as $valor)
-                                        <option value={{$valor->jefe_departamento}}>
-                                            @foreach ($responsables as $previo) 
-                                                @if ($valor->jefe_departamento == $previo->id_responsable)
-                                                    {{$previo->apellidos}} {{$previo->nombre_r}}
-                                                @endif
-                                            @endforeach
-                                        </option>                                        
-                                    @endforeach
-                                    @foreach ($responsables as $ejecutivo)
-                                        @if ($ejecutivo ->id_area == 2)
-                                            <option value = {{ $ejecutivo->id_responsable }}>{{$ejecutivo->nombre_r}}</option>;
-                                        @endif
-                                    @endforeach                     
-                                </select>
-                                @error('jefe_departamento')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>-->
                         <div class="form-group row">
                             <!-- ID Autoriza -->
                             <label for="autorizacion"
@@ -198,8 +167,8 @@
                                 class="col-sm-2 text-end control-label col-form-label">Descripción General del Requerimiento*</label>
                             <div class="col-md-8">
                                 @foreach ($levantamientos as $valor)
-                                <input name="general" type="text" class="required form-control  @error ('general') is-invvalid @enderror" 
-                                    value="{{$valor->general}}" placeholder="Se breve" required autofocus>
+                                <textarea name="general" type="text" class="required form-control  @error ('general') is-invvalid @enderror" 
+                                    placeholder="Se breve" required autofocus>{{$valor->general}}</textarea>
                                 @endforeach
                                 @error('general')
                                     <span class="invalid-feedback" role="alert">
@@ -209,12 +178,11 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="detalle"
-                                class="col-sm-2 text-end control-label col-form-label">Descripción Específica del Requerimiento*</label>
+                            <label for="detalle" class="col-sm-2 text-end control-label col-form-label">Descripción Específica del Requerimiento*</label>
                             <div class="col-md-8">
                                 @foreach ($levantamientos as $valor)
-                                    <input name="detalle" type="text" class="required form-control @error ('detalle') is-invvalid @enderror" 
-                                    value="{{$valor->detalle}}" placeholder="Se detallado" required autofocus>
+                                    <textarea name="detalle" type="text" class="required form-control @error ('detalle') is-invvalid @enderror" 
+                                     placeholder="Se detallado" required autofocus>{{$valor->detalle}}</textarea>
                                 @endforeach
                                 @error('detalle')
                                     <span class="invalid-feedback" role="alert">
@@ -224,14 +192,11 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <!-- ---------------------
-                                start Default Summernote Editor
-                            ---------------- -->
                             <label for="esperado" class="col-sm-2 text-end control-label col-form-label">Resultado Esperado*</label>
                             <div class="col-md-8">
                                 @foreach ($levantamientos as $valor)
                                     <textarea name="esperado" aria-placeholder="Que es lo que se espera" required autofocus rows="5"
-                                        class="required form-control @error ('esperado') is-invvalid @enderror">{!! nl2br(e($valor->esperado)) !!}
+                                        class="required form-control @error ('esperado') is-invvalid @enderror">{{$valor->esperado}}
                                     </textarea>
                                 @endforeach
                                 @error('esperado')
@@ -240,11 +205,6 @@
                                     </span>
                                 @enderror
                             </div>
-                            
-                            <!-- ---------------------
-                                end Default Summernote Editor
-                            ---------------- -->
-
                         </div>
                         <div class="form-group row">
                             <label for="involucrados"
@@ -351,16 +311,4 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css"/>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
-<script>
-    /************************************/
-    //default editor
-    /************************************/
-    $('.summernote').summernote({
-    height: 150, // set editor height
-    //codemirror: { theme:'spacelab'}, // codemirror options
-    //minHeight: null, // set minimum height of editor
-    //maxHeight: null, // set maximum height of editor
-    //focus: false, // set focus to editable area after initializing summernote
-    });
-</script>
 @endsection 
