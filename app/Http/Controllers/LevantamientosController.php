@@ -70,6 +70,9 @@ class LevantamientosController extends Controller
      */
     
     protected function actualiza(request $data){
+        $this->validate($data, [
+            'problema' => "max:250"
+        ]);
         $update = levantamiento::FindOrFail($data['folio']);
         $update->solicitante = $data['solicitante'];
         $update->departamento = $data['departamento'];
