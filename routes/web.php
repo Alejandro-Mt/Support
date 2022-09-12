@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccesoController;
 use App\Http\Controllers\AnalisisController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\BuildController;
@@ -139,7 +140,10 @@ route::post('soporte.ajustes',[BuildController::class, 'edit'])->name('SUser');
 route::get('soporte.niveles',[BuildController::class, 'edit'])->middleware('auth')->name('Seg');
 ##  metodos para Usuario ##
 route::get('formatos.ajustes',[PermissionsController::class, 'ajustes'])->middleware('auth')->name('Ajustes');
-route::post('formatos.ajustes',[PermissionsController::class, 'edit'])->name('AUser');
+route::post('formatos.ajustes',[PermissionsController::class, 'edit'])->name('AjUser');
+##  metodos para Usuario "Accesos" ##
+route::post('accesos.{id_user}.{id_sistema}',[AccesoController::class, 'create'])->name('AcUser');
+route::get('accesos.update.{id_user}.{id_sistema}',[AccesoController::class, 'update'])->name('DAcUser');
 
 ##  metodos para registro previo  ##
 route::get('preregistro',[PreregistroController::class, 'index'])->name('PreRegistro');
