@@ -26,7 +26,7 @@ class PermissionsController extends Controller
                         select('id_sistema')
                         ->where('id_user',Auth::user()->id)
                 )
-                ->where('id_puesto','<',Auth::user()->id_puesto)
+                ->where('id_puesto','=<',Auth::user()->id_puesto)
                 ->get();
         $puestos = puesto::all();
         $usuarios = DB::table('users as u')

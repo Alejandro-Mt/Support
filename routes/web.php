@@ -49,6 +49,7 @@ Route::get('/principal',[HomeController::class, 'principal'])->middleware('auth'
 #          Perfil         #
 Route::post('/profile', [ProfileController::class, 'update'])->name('Actualiza');
 Route::get('/profile/{id}', [ProfileController::class, 'edit'])->middleware('auth')->name('profile');
+Route::post('user.pass',[ProfileController::class, 'updatepass'])->middleware('auth')->name('UsrPass');
 #          Catalogo         #
 Route::get('/layouts.datos', [MenuController::class, 'store'])->middleware('auth')->name('Seguir');
 #          Area         #
