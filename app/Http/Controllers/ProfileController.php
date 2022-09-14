@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\registro;
 use App\Models\User;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +63,7 @@ class ProfileController extends Controller
         $folios = 
         registro::
           select(
+            db::raw("concat(res.nombre_r,' ',res.apellidos) as responsable"),
             db::raw("concat(arq.nombre_r,' ',arq.apellidos) as arquitecto"),
             db::raw("concat(folio,'-',descripcion) as titulo"),
             db::raw(
@@ -70,20 +72,26 @@ class ProfileController extends Controller
                   IF(registros.id_estatus in (11,9,7), "construccion",
                     IF(registros.id_estatus = 8, "liberacion",
                       IF(registros.id_estatus = 2, "implementacion",
-                        IF(registros.id_estatus = 13, "pospuesto", "implementado")
+                        IF(registros.id_estatus in (13,14), "cancelado", "implementado")
                       )
                     )
                   )
                 )
               ) as estatus'
-            )
+            ),
+            db::raw("IFNULL(ures.avatar, 'assets/images/users/1.jpg') as img_resp"),
+            db::raw("IFNULL(uarq.avatar, 'assets/images/users/1.jpg') as img_arq"),
+            'registros.id_cliente'
           )
           ->leftjoin('responsables as res', 'registros.id_responsable', 'res.id_responsable')
           ->leftjoin('responsables as arq', 'registros.id_arquitecto', 'arq.id_responsable')
+          ->leftjoin('users as ures', 'res.email', 'ures.email')
+          ->leftjoin('users as uarq', 'arq.email', 'uarq.email')
           ->where([['res.email', Auth::user()->email],
               ['registros.id_estatus','!=','18']
             ])
-          ->get();
+          ->orderby('registros.id_registro','desc')
+          ->paginate(3);
         return view('profile',compact('data','fechas','folios'));
         #return $folios;
     }
@@ -96,18 +104,23 @@ class ProfileController extends Controller
         $update = User::findOrFail($user->id);
         $update->avatar = storage::url($data->file('avatar')->store('public/avatar'));
         $update->save(); 
-        #return redirect(route('profile',$user->id));
+        return redirect(route('profile',$user->id));
         #return $data->avatar;
     }
     public function updatePass(Request $data){
       $data->validate([
         'oldpass' => 'required',
-        'password' => ['required', 'confirmed', Rules\Password::defaults()]
+        'password' => ['required', 'confirmed', Rules\Password::defaults(),'different:oldpass']
       ]);
       $update = User::findOrFail(Auth::user()->id);
-      $update->password = Hash::make($data['password']);
-      $update->save(); 
-      #return redirect(route('profile',Auth::user()->id));
-      dd($data['password']);
+      if(Hash::check($data['oldpass'],Auth::user()->password)){
+        $update->password = Hash::make($data['password']);
+        $update->save(); 
+        return redirect(route('profile',Auth::user()->id))->with('success','Contraseña actualizada con exito');
+      }
+      else{
+        return redirect(route('profile',Auth::user()->id))->with('danger','Estas credenciales no coinciden con nuestros registros.');
+      }
+      #dd($data['password']);
   }
 }

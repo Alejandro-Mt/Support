@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\cliente;
 use App\Models\registro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,9 @@ class HomeController extends Controller
     {
         
         $tabla = db::table('registros as r')
-                        ->select('r.folio',
+                        ->select(
+                            'r.id_registro',
+                            'r.folio',
                             'descripcion',
                             'e.titulo',
                             'cl.clase',
@@ -100,9 +103,31 @@ class HomeController extends Controller
                         ->leftJoin('desfases as dfi', 'i.motivoRetrasoInfo', 'dfi.id')
                         ->leftJoin('liberaciones as lib', 'r.folio', 'lib.folio')
                         ->leftJoin('implementaciones as imp', 'r.folio', 'imp.folio')
+                        ->orderBy('r.id_registro','asc')
                         ->get();
-        return view('principal',compact('tabla'));
-        #dd($tabla);
+        $SxR = db::table('registros as r')
+                    ->select(db::raw("concat(re.nombre_r,' ',re.apellidos) as name"),
+                            #db::raw("group_concat(r.id_cliente) as data")
+                            db::raw("count(r.id_responsable) as y"))
+                    ->join('responsables as re','r.id_responsable','re.id_responsable')
+                    ->groupBy('re.nombre_r')
+                    ->orderBy('re.nombre_r')
+                    ->get();
+        $responsables = db::table('registros as r')
+                    ->select(db::raw("concat(re.nombre_r,' ',re.apellidos) as name"),
+                            db::raw("group_concat(r.id_cliente) as data"))
+                    ->join('responsables as re','r.id_responsable','re.id_responsable')
+                    ->groupBy('re.nombre_r')
+                    ->orderBy('re.nombre_r')
+                    ->get();
+        $clientes = db::table('registros as r')
+                    ->distinct()
+                    ->select('c.nombre_cl')
+                    ->join('clientes as c','r.id_cliente','c.id_cliente')
+                    ->orderBy('c.nombre_cl')
+                    ->get();                    
+        return view('principal',compact('tabla','SxR','responsables','clientes'));
+        #dd($fechas);
     }
 
 }

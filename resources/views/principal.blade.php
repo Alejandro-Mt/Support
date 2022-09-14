@@ -23,6 +23,7 @@
             <table id="excel" class="table table-striped table-bordered display text-nowrap" style="width: 100%">
               <thead>
                 <tr>
+                  <th class="header">LISTA</th>
                   <th class="header">*ID REQUERIMIENTO</th>
                   <th class="header">DESCRIPCIÓN</th>
                   <th class="header">*ESTATUS GENERAL</th>
@@ -86,6 +87,7 @@
               <tbody>
                 @foreach ($tabla as $registro)
                   <tr>
+                    <td>{{$registro->id_registro}}</td>
                     <td>{{$registro->folio}}</td>
                     <td>{{$registro->descripcion}}</td>
                     <td>{{$registro->titulo}}</td>
@@ -165,6 +167,7 @@
               </tbody>
               <tfoot>
                 <tr>
+                  <th>LISTA</th>
                   <th>*ID REQUERIMIENTO</th>
                   <th>DESCRIPCIÓN</th>
                   <th>*ESTATUS GENERAL</th>
