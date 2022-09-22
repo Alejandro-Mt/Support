@@ -48,16 +48,16 @@ class PlaneacionController extends Controller
         }
         foreach($registro as $fecha){$this->validate($data, ['fechaCompReqC' => "required|date|after_or_equal:$fecha->fechades"]);}
         $verificar = planeacion::where('folio',$data['folio'])->count();
-        if($data['fechaCompReqC']<>NULL){$fechaCompReqC=date("y/m/d", strtotime($data['fechaCompReqC']));}else{$fechaCompReqC=NULL;}
+        if($data['fechaCompReqC']<>NULL){$fechaCompReqC=date("y/m/d H:i:s", strtotime($data['fechaCompReqC']));}else{$fechaCompReqC=NULL;}
         if($data['fechaCompReqR']<>NULL){
             if($data['fechaCompReqC'] <> NULL){
                 $this->validate($data, ['fechaCompReqR' => "required|date|after_or_equal:$data[fechaCompReqC]"]);
             }
-            $fechaCompReqR=date("y/m/d", strtotime($data['fechaCompReqR']));
+            $fechaCompReqR=date("y/m/d H:i:s", strtotime($data['fechaCompReqR']));
         }else{
             $fechaCompReqR=NULL;
         }
-        if($data['fechareact']<>NULL){$fechareact=date("y/m/d", strtotime($data['fechareact']));}else{$fechareact=NULL;}
+        if($data['fechareact']<>NULL){$fechareact=date("y/m/d H:i:s", strtotime($data['fechareact']));}else{$fechareact=NULL;}
         if($data['id_estatus'] == 9){$this->validate($data, ['fechaCompReqR' => "required|date|after_or_equal:$data[fechaCompReqC]"]);}
         if($verificar == 0){
             planeacion::create([
@@ -129,20 +129,20 @@ class PlaneacionController extends Controller
                 cronograma::create([
                     'folio' => $data['folio'],
                     'titulo' => 'Analisis de requerimientos',
-                    'inicio' => date("y/m/d", strtotime($data['fechaEnvAn'])),
-                    'fin' => date("y/m/d", strtotime($data['fechaAutAn'])),
+                    'inicio' => date("y/m/d H:i:s", strtotime($data['fechaEnvAn'])),
+                    'fin' => date("y/m/d H:i:s", strtotime($data['fechaAutAn'])),
                     'color' => 'bg-success'
                 ]);
                 analisis::create([
                     'folio' => $data['folio'],
-                    'fechaCompReqC' => date("y/m/d", strtotime($data['fechaEnvAn'])),
+                    'fechaCompReqC' => date("y/m/d H:i:s", strtotime($data['fechaEnvAn'])),
                     'evidencia' => 'null',
-                    'fechaCompReqR' => date("y/m/d", strtotime($data['fechaAutAn'])),
+                    'fechaCompReqR' => date("y/m/d H:i:s", strtotime($data['fechaAutAn'])),
                 ]);
             }/*else{
                 $updateA = analisis::where('folio',$data['folio'])->first();;
-                $updateA->fechaCompReqC = date("y/m/d", strtotime($data['fechaEnvAn']));
-                $updateA->fechaCompReqR = date("y/m/d", strtotime($$data['fechaAutAn']));
+                $updateA->fechaCompReqC = date("y/m/d H:i:s", strtotime($data['fechaEnvAn']));
+                $updateA->fechaCompReqR = date("y/m/d H:i:s", strtotime($$data['fechaAutAn']));
                 $updateA->save();
                 $updateCA = cronograma::where('folio',$data['folio'])->orwhere('titulo','Analisis de requerimientos')->first();
                 $updateCA->inicio = date('y/m/d',strtotime($data('fechaEnvAn')));
