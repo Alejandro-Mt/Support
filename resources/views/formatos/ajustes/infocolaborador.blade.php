@@ -1,4 +1,3 @@
-
 <!-- Modal -->
 <div class="modal fade" id="modal-{{$loop->iteration}}" tabindex="-1" aria-labelledby="scroll-long-inner-modal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable">

@@ -4,20 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\analisis;
 use App\Models\bitacora;
-use App\Models\construccion;
 use App\Models\cronograma;
 use App\Models\desfase;
-use App\Models\implementacion;
 use App\Models\informacion;
 use App\Models\levantamiento;
-use App\Models\liberacion;
 use App\Models\planeacion;
 use App\Models\registro;
-use App\Models\responsable;
-use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PHPUnit\Util\Json;
 
 class PlaneacionController extends Controller
 {
@@ -52,7 +46,7 @@ class PlaneacionController extends Controller
             $this->validate($data, ['motivodesfase' => "required"]);
             $this->validate($data, ['fechareact' => "required|date|after_or_equal:$data[fechaCompReqC]"]);
         }
-        #foreach($registro as $fecha){$this->validate($data, ['fechaCompReqC' => "required|date|after_or_equal:$fecha->fechades"]);}
+        foreach($registro as $fecha){$this->validate($data, ['fechaCompReqC' => "required|date|after_or_equal:$fecha->fechades"]);}
         $verificar = planeacion::where('folio',$data['folio'])->count();
         if($data['fechaCompReqC']<>NULL){$fechaCompReqC=date("y/m/d", strtotime($data['fechaCompReqC']));}else{$fechaCompReqC=NULL;}
         if($data['fechaCompReqR']<>NULL){
@@ -86,7 +80,6 @@ class PlaneacionController extends Controller
             ]);
         }
         else{
-            $nombre = auth::user()->nombre;
             $previo = planeacion::select('*')->where('folio',$data['folio'])->get();
             foreach($previo as $fecha){
                 if(date('y/m/d', strtotime($fecha->fechaCompReqC)) <> $fechaCompReqC){
@@ -94,14 +87,14 @@ class PlaneacionController extends Controller
                         bitacora::create([
                             'id_user' => auth::user()->id,
                             'usuario' => auth::user()->fullname,
-                            'id_estatus' => $data['id_estatus'],
+                            'id_estatus' => '11',
                             'campo' => 'Fechas de planeación actualizadas'
                         ]);
                     }else{
                         bitacora::create([
                             'id_user' => auth::user()->id,
                             'usuario' => auth::user()->fullname,
-                            'id_estatus' => $data['id_estatus'],
+                            'id_estatus' => '11',
                             'campo' => 'Fecha compromiso cliente'
                         ]);
                     }
@@ -110,7 +103,7 @@ class PlaneacionController extends Controller
                         bitacora::create([
                             'id_user' => auth::user()->id,
                             'usuario' => auth::user()->fullname,
-                            'id_estatus' => $data['id_estatus'],
+                            'id_estatus' => '11',
                             'campo' => 'Fecha compromiso real'
                         ]);
                     }
@@ -156,73 +149,6 @@ class PlaneacionController extends Controller
                 $updateCA->fin = date('y/m/d',strtotime($data('fechaAutAn')));
                 $updateCA->save();
             }*/
-        }
-        if($data['fechaInConP']<>NULL){
-            if(construccion::where('folio',$data['folio'])->count() == 0){
-                cronograma::create([
-                    'folio' => $data['folio'],
-                    'titulo' => 'Construcción',
-                    'inicio' => date("y/m/d", strtotime($data['fechaInConP'])),
-                    'fin' => date("y/m/d", strtotime($data['fechaInConR'])),
-                    'color' => 'bg-danger'
-                ]);
-                construccion::create([
-                    'folio' => $data['folio'],
-                    'fechaCompReqC' => date("y/m/d", strtotime($data['fechaInConP'])),
-                    'evidencia' => 'null',
-                    'fechaCompReqR' => date("y/m/d", strtotime($data['fechaInConR'])),
-                ]);
-            }/*else{
-                $updateC = construccion::where('folio',$data['folio'])->first();
-                $updateC->fechaCompReqC = date("y/m/d", strtotime($data['fechaInConP']));
-                $updateC->fechaCompReqR = date("y/m/d", strtotime($$data['fechaInConR']));
-                $update->save();
-                $updateCC = cronograma::where('folio',$data['folio'])->orwhere('titulo','Construcción')->first();
-                $updateCC->inicio = date('y/m/d',strtotime($data('fechaInConP')));
-                $updateCC->fin = date('y/m/d',strtotime($data('fechaInConR')));
-                $updateCC->save();
-            }*/
-        }
-        if($data['FechaLibP']<>NULL){
-            if(liberacion::where('folio',$data['folio'])->count() == 0){
-                cronograma::create([
-                    'folio' => $data['folio'],
-                    'titulo' => 'Liberación',
-                    'inicio' => date("y/m/d", strtotime($data['FechaLibP'])),
-                    'fin' => date("y/m/d", strtotime($data['FechaLibR'])),
-                    'color' => 'bg-warning'
-                ]);
-                liberacion::create([
-                    'folio' => $data['folio'],
-                    'fecha_lib_a' => date("y/m/d", strtotime($data['FechaLibP'])),
-                    'evidencia' => 'null',
-                    'fecha_lib_r' => date("y/m/d", strtotime($data['FechaLibR'])),
-                ]);
-            }/*else{
-                $updateL = liberacion::where('folio',$data['folio'])->first();
-                $updateL->fecha_lib_a = date("y/m/d", strtotime($data['FechaLibP']));
-                $updateL->fecha_lib_r = date("y/m/d", strtotime($$data['FechaLibR']));
-                $update->save();
-                $updateCL = cronograma::where('folio',$data['folio'])->orwhere('titulo','Liberación')->first();
-                $updateCL->inicio = date('y/m/d',strtotime($data('FechaLibP')));
-                $updateCL->fin = date('y/m/d',strtotime($data('FechaLibR')));
-                $updateCL->save();
-            }*/
-        }
-        if($data['FechaImpP']<>NULL){
-            if(implementacion::where('folio',$data['folio'])->count() == 0){
-                cronograma::create([
-                    'folio' => $data['folio'],
-                    'titulo' => 'Implementación',
-                    'inicio' => date("y/m/d", strtotime($data['FechaImpP'])),
-                    'fin' => date("y/m/d", strtotime($data['FechaImpP'])),
-                    'color' => 'bg-primary'
-                ]);
-                implementacion::create([
-                    'folio' => $data['folio'],
-                    'f_implementacion' => date("y/m/d", strtotime($data['FechaImpP'])),
-                ]);
-            }
         }
         $estatus = registro::select()-> where ('folio', $data->folio)->first();
         $estatus->id_estatus = $data->input('id_estatus');

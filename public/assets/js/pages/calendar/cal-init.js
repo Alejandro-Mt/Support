@@ -199,7 +199,7 @@
                 selectable: true,
                 validRange: function(nowDate) {
                     return {
-                      start: nowDate,
+                      start: nowDate.add(-1,'day'),
                     };
                 },
                 drop: function(date) { 
