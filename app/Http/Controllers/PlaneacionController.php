@@ -46,7 +46,7 @@ class PlaneacionController extends Controller
             $this->validate($data, ['motivodesfase' => "required"]);
             $this->validate($data, ['fechareact' => "required|date|after_or_equal:$data[fechaCompReqC]"]);
         }
-        foreach($registro as $fecha){$this->validate($data, ['fechaCompReqC' => "required|date|after_or_equal:$fecha->fechades"]);}
+        #foreach($registro as $fecha){$this->validate($data, ['fechaCompReqC' => "required|date|after_or_equal:$fecha->fechades"]);}
         $verificar = planeacion::where('folio',$data['folio'])->count();
         if($data['fechaCompReqC']<>NULL){$fechaCompReqC=date("y/m/d H:i:s", strtotime($data['fechaCompReqC']));}else{$fechaCompReqC=NULL;}
         if($data['fechaCompReqR']<>NULL){
