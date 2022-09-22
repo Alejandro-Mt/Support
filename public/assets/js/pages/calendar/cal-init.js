@@ -199,12 +199,10 @@
                 selectable: true,
                 validRange: function(nowDate) {
                     if (document.getElementById('upload')) {
-                        console.log('comentario')
                     } else {
                     return {
                       start: nowDate.add(-1,'day'),
                     };
-                        console.log('carga de datos')
                     }
                 },
                 drop: function(date) { 
