@@ -139,11 +139,11 @@
                                 class="col-sm-2 text-end control-label col-form-label">Fecha Compromiso para Entrega*</label>
                             <div class= 'col-md-8'>
                                 <div class="input-group">
-                                    <input name="fechaCompReqC" type="text" class="form-control mydatepicker required form-control @error('fechaCompReqC') is-invalid @enderror" placeholder="DD-MM-AAAA" data-date-format="dd-mm-yyyy"  required autofocus
-                                        @if ($vacio == 0) value="{{ old('fechaCompReqC') }}" @endif 
+                                    <input name="fechaInConP" type="text" class="form-control mydatepicker required form-control @error('fechaInConP') is-invalid @enderror" placeholder="DD-MM-AAAA" data-date-format="dd-mm-yyyy"  required autofocus
+                                        @if ($vacio == 0) value="{{ old('fechaInConP') }}" @endif 
                                         @foreach ($previo as $ant)
                                             @if ($ant->fechaCompReqC == NULL)
-                                                value="{{ old('fechaCompReqC') }}"
+                                                value="{{ old('fechaInConP') }}"
                                             @else
                                                 value="{{date('d-m-20y',strtotime($ant->fechaCompReqC))}}" 
                                             @endif 
@@ -153,7 +153,7 @@
                                             <i class="fa fa-calendar"></i>
                                         </span>
                                     </div>
-                                    @error('fechaCompReqC')
+                                    @error('fechaInConP')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -179,21 +179,21 @@
                                 class="col-sm-2 text-end control-label col-form-label">Fecha Compromiso para Entrega Real*</label>
                             <div class= 'col-md-8'>
                                 <div class="input-group">
-                                    <input name = "fechaCompReqR"
-                                        @if ($vacio == 0) value="{{ old('fechaCompReqR') }}" @endif 
+                                    <input name = "fechaInConR"
+                                        @if ($vacio == 0) value="{{ old('fechaInConR') }}" @endif 
                                         @foreach ($previo as $ant)
                                             @if ($ant->fechaCompReqR <> NULL)
                                                 value="{{date('d-m-20y',strtotime($ant->fechaCompReqR))}}" 
                                             @else
-                                                value="{{ old('fechaCompReqR') }}"
+                                                value="{{ old('fechaInConR') }}"
                                             @endif 
-                                        @endforeach type="text" class="form-control mydatepicker required form-control @error('fechaCompReqR') is-invalid @enderror" id="datepicker-autoclose" placeholder="DD-MM-AAAA" data-date-format="dd-mm-yyyy">
+                                        @endforeach type="text" class="form-control mydatepicker required form-control @error('fechaInConR') is-invalid @enderror" id="datepicker-autoclose" placeholder="DD-MM-AAAA" data-date-format="dd-mm-yyyy">
                                     <div class="input-group-append">
                                         <span class="input-group-text h-100">
                                             <i class="fa fa-calendar"></i>
                                         </span>
                                     </div>
-                                    @error('fechaCompReqR')
+                                    @error('fechaInConR')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -307,8 +307,6 @@
                                 </div>
                             </div>
                         </div>
-                        <input class="d-none" name="fechaInConP" value="{{null}}" type="text" class="form-control" data-date-format="dd-mm-yyyy">
-                        <input class="d-none" name="fechaInConR" value="{{null}}" type="text" class="form-control" data-date-format="dd-mm-yyyy">
                         <input class="d-none" name="FechaLibP" value="{{null}}" type="text" class="form-control" data-date-format="dd-mm-yyyy">
                         <input class="d-none" name="FechaLibR" value="{{null}}" type="text" class="form-control" data-date-format="dd-mm-yyyy"> 
                         <input class="d-none" name="FechaImpP" value="{{null}}" type="text" class="form-control" data-date-format="dd-mm-yyyy">

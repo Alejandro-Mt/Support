@@ -43,30 +43,38 @@ class ConstruccionController extends Controller
             $this->validate($data, ['motivodesfase' => "required"]);
             $this->validate($data, ['fechareact' => "required|date|after_or_equal:$data[fechaCompReqC]"]);
         }
-        foreach($val as $fecha){$this->validate($data, ['fechaCompReqC' => "required|date|after_or_equal:$fecha->fechaCompReqR"]);}
+        foreach($val as $fecha){$this->validate($data, ['fechaInConP' => "required|date|after_or_equal:$fecha->fechaCompReqR"]);}
         $verificar = construccion::where('folio',$data['folio'])->count();
-        if($data['fechaCompReqC']<>NULL){$fechaCompReqC=date("y/m/d", strtotime($data['fechaCompReqC']));}else{$fechaCompReqC=NULL;}
-        if($data['fechaCompReqR']<>NULL){
-            if($data['fechaCompReqC'] <> NULL){
-                $this->validate($data, ['fechaCompReqR' => "required|date|after_or_equal:$data[fechaCompReqC]"]);
+        if($data['fechaInConP']<>NULL){$fechaCompReqC=date("y/m/d H:i:s", strtotime($data['fechaInConP']));}else{$fechaCompReqC=NULL;}
+        if($data['fechaInConR']<>NULL){
+            if($data['fechaInConP'] <> NULL){
+                $this->validate($data, ['fechaInConR' => "required|date|after_or_equal:$data[fechaInConP]"]);
             }
-            $fechaCompReqR=date("y/m/d", strtotime($data['fechaCompReqR']));}
+            $fechaCompReqR=date("y/m/d H:i:s", strtotime($data['fechaInConR']));
+        }
         else{
             $fechaCompReqR=NULL;
         }
-        if($data['fechareact']<>NULL){$fechareact=date("y/m/d", strtotime($data['fechareact']));}else{$fechareact=NULL;}
-        if($data['id_estatus'] == 8){$this->validate($data, ['fechaCompReqR' => "required|date|after_or_equal:$data[fechaCompReqC]"]);}
+        if($data['fechareact']<>NULL){$fechareact=date("y/m/d H:i:s", strtotime($data['fechareact']));}else{$fechareact=NULL;}
+        if($data['id_estatus'] == 8){$this->validate($data, ['fechaInConR' => "required|date|after_or_equal:$data[fechaInConP]"]);}
         if($verificar == 0){
             construccion::create([
-            'folio' => $data['folio'],
-            'fechaCompReqC' => $fechaCompReqC,
-            'evidencia' => $data['evidencia'],
-            'fechaCompReqR' => $fechaCompReqR,
-            'desfase' => $data['desfase'],
-            'motivodesfase' => $data['motivodesfase'],
-            'motivopausa' => $data['motivopausa'],
-            'evpausa' => $data['evpausa'],
-            'fechareact' => $fechareact,
+                'folio' => $data['folio'],
+                'fechaCompReqC' => $fechaCompReqC,
+                'evidencia' => $data['evidencia'],
+                'fechaCompReqR' => $fechaCompReqR,
+                'desfase' => $data['desfase'],
+                'motivodesfase' => $data['motivodesfase'],
+                'motivopausa' => $data['motivopausa'],
+                'evpausa' => $data['evpausa'],
+                'fechareact' => $fechareact,
+            ]);
+            cronograma::create([
+                'folio' => $data['folio'],
+                'titulo' => 'Construcción',
+                'inicio' => $fechaCompReqC,
+                'fin' => $fechaCompReqR,
+                'color' => 'bg-danger'
             ]);
         }
         else{
@@ -113,51 +121,25 @@ class ConstruccionController extends Controller
             $estatus->save();
             $update->save(); 
         } 
-        if($data['fechaInConP']<>NULL){
-            if(construccion::where('folio',$data['folio'])->count() == 0){
-                cronograma::create([
-                    'folio' => $data['folio'],
-                    'titulo' => 'Construcción',
-                    'inicio' => date("y/m/d", strtotime($data['fechaInConP'])),
-                    'fin' => date("y/m/d", strtotime($data['fechaInConR'])),
-                    'color' => 'bg-danger'
-                ]);
-                construccion::create([
-                    'folio' => $data['folio'],
-                    'fechaCompReqC' => date("y/m/d", strtotime($data['fechaInConP'])),
-                    'evidencia' => 'null',
-                    'fechaCompReqR' => date("y/m/d", strtotime($data['fechaInConR'])),
-                ]);
-            }/*else{
-                $updateC = construccion::where('folio',$data['folio'])->first();
-                $updateC->fechaCompReqC = date("y/m/d", strtotime($data['fechaInConP']));
-                $updateC->fechaCompReqR = date("y/m/d", strtotime($$data['fechaInConR']));
-                $update->save();
-                $updateCC = cronograma::where('folio',$data['folio'])->orwhere('titulo','Construcción')->first();
-                $updateCC->inicio = date('y/m/d',strtotime($data('fechaInConP')));
-                $updateCC->fin = date('y/m/d',strtotime($data('fechaInConR')));
-                $updateCC->save();
-            }*/
-        }
         if($data['FechaLibP']<>NULL){
             if(liberacion::where('folio',$data['folio'])->count() == 0){
                 cronograma::create([
                     'folio' => $data['folio'],
                     'titulo' => 'Liberación',
-                    'inicio' => date("y/m/d", strtotime($data['FechaLibP'])),
-                    'fin' => date("y/m/d", strtotime($data['FechaLibR'])),
+                    'inicio' => date("y/m/d H:i:s", strtotime($data['FechaLibP'])),
+                    'fin' => date("y/m/d H:i:s", strtotime($data['FechaLibR'])),
                     'color' => 'bg-warning'
                 ]);
                 liberacion::create([
                     'folio' => $data['folio'],
-                    'fecha_lib_a' => date("y/m/d", strtotime($data['FechaLibP'])),
+                    'fecha_lib_a' => date("y/m/d H:i:s", strtotime($data['FechaLibP'])),
                     'evidencia' => 'null',
-                    'fecha_lib_r' => date("y/m/d", strtotime($data['FechaLibR'])),
+                    'fecha_lib_r' => date("y/m/d H:i:s", strtotime($data['FechaLibR'])),
                 ]);
             }/*else{
                 $updateL = liberacion::where('folio',$data['folio'])->first();
-                $updateL->fecha_lib_a = date("y/m/d", strtotime($data['FechaLibP']));
-                $updateL->fecha_lib_r = date("y/m/d", strtotime($$data['FechaLibR']));
+                $updateL->fecha_lib_a = date("y/m/d H:i:s", strtotime($data['FechaLibP']));
+                $updateL->fecha_lib_r = date("y/m/d H:i:s", strtotime($$data['FechaLibR']));
                 $update->save();
                 $updateCL = cronograma::where('folio',$data['folio'])->orwhere('titulo','Liberación')->first();
                 $updateCL->inicio = date('y/m/d',strtotime($data('FechaLibP')));
@@ -170,13 +152,13 @@ class ConstruccionController extends Controller
                 cronograma::create([
                     'folio' => $data['folio'],
                     'titulo' => 'Implementación',
-                    'inicio' => date("y/m/d", strtotime($data['FechaImpP'])),
-                    'fin' => date("y/m/d", strtotime($data['FechaImpP'])),
+                    'inicio' => date("y/m/d H:i:s", strtotime($data['FechaImpP'])),
+                    'fin' => date("y/m/d H:i:s", strtotime($data['FechaImpP'])),
                     'color' => 'bg-primary'
                 ]);
                 implementacion::create([
                     'folio' => $data['folio'],
-                    'f_implementacion' => date("y/m/d", strtotime($data['FechaImpP'])),
+                    'f_implementacion' => date("y/m/d H:i:s", strtotime($data['FechaImpP'])),
                 ]);
             }
         }
