@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\pausa;
 use App\Models\registro;
+use App\Models\solicitud;
 use App\Models\solpri;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PrioridadController extends Controller
 {
@@ -36,6 +38,7 @@ class PrioridadController extends Controller
         #dd($data);
         $autoriza = solpri::findOrFail($id);
         $autoriza->estatus = $data['estatus'];
+        $autoriza->id_user = Auth::user()->id;
         $autoriza->save();
         return redirect(route('AutP'));
         //dd($clientes);

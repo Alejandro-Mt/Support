@@ -13,6 +13,7 @@ use App\Models\sistema;
 use App\Models\solpri;
 use Facade\FlareClient\Http\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClienteController extends Controller
 {
@@ -177,9 +178,8 @@ class ClienteController extends Controller
     {
         solpri::create([
             'id_cliente' => $data['id_cliente'],
-            'orden' => $data['orden']
+            'orden' => $data['orden'],
+            'solicitante' => $data['solicitante']
         ]);
-        #return redirect(route('Prioridad',$data['id_cliente']));
-        #dd($data);
     }
 }

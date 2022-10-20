@@ -154,6 +154,17 @@
           <p>
             Si se autoriza enviar los datos, se debera esperar a que un coordinador autorice los ajustes
           </p>
+          <div class="form-group row">
+            <label for="solicitante" class="col-sm-12 text-end control-label col-form-label">Quien solicita</label>
+            <div class="col-md-12">
+              <input id="solicitante" type="text" class="required form-control  @error ('solicitante') is-invvalid @enderror" placeholder="Nombre completo">
+              @error('solicitante')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-light-danger text-danger font-medium waves-effect text-start" data-bs-dismiss="modal">
@@ -223,6 +234,7 @@
     $('#solicitar').on('click', function (){
       var lista = document.getElementById('card-colors');
       var cliente = $('.d-none').attr("id");
+      var solicitante = $('#solicitante').val();
       var orden = '';
       for(var i = 0; i<lista.children.length; i++){
         if (i < lista.children.length-1) {
@@ -232,13 +244,18 @@
         }
       }
       $.ajax({
-          headers: {'X-CSRF-TOKEN' : "{{csrf_token()}}"},
-          type: 'POST',
-          url: "solicitud.prioridades",
-          data: { id_cliente: cliente, orden: orden },
-          success: function (response) {
-            window.location.href = "prioridad." + cliente;
-          }
+        headers: {'X-CSRF-TOKEN' : "{{csrf_token()}}"},
+        type: 'POST',
+        url: "solicitud.prioridades",
+        data: { id_cliente: cliente, orden: orden, solicitante: solicitante},
+        success: function (response) {
+          window.location.href = "prioridad." + cliente;
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {  
+          if (XMLHttpRequest.status === 422) {
+            alert("Se requiere el nombre del solicitante");
+          } 
+        }
       });
     }) 
 
