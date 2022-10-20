@@ -19,7 +19,7 @@ class PermissionsController extends Controller
         $equipo = 
             user::distinct()
                 ->select('users.*')
-                ->join('accesos as acs','users.id','acs.id_user')
+                ->leftjoin('accesos as acs','users.id','acs.id_user')
                 ->wherein(
                     'acs.id_sistema',
                     acceso::
