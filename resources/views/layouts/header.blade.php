@@ -201,9 +201,6 @@
                         @if (Auth::user()->id_puesto > 3)
                           <a class="dropdown-item" href="{{route('AutP')}}">
                               <i class="feather-sm" data-feather="archive"></i>
-                              <div class="notify">
-                                  <span class="heartbit"></span> <span class="point"></span>
-                              </div>
                               Solicitud de ajuste a prioridades
                           </a>
                         @endif
