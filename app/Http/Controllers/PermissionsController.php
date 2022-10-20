@@ -16,8 +16,17 @@ class PermissionsController extends Controller
     //
     public function ajustes(){
         $areas = area::all();
-        $equipo = 
-            user::distinct()
+        
+        if (Auth::user()->id == 1) {
+            # code...
+            $equipo = user::distinct()
+            ->select('users.*')
+            ->leftjoin('accesos as acs','users.id','acs.id_user')
+            ->where('id_puesto','<=',Auth::user()->id_puesto)
+            ->get();
+        } else {
+            # code...
+            $equipo = user::distinct()
                 ->select('users.*')
                 ->leftjoin('accesos as acs','users.id','acs.id_user')
                 ->wherein(
@@ -28,6 +37,7 @@ class PermissionsController extends Controller
                 )
                 ->where('id_puesto','<=',Auth::user()->id_puesto)
                 ->get();
+        }
         $puestos = puesto::all();
         $usuarios = DB::table('users as u')
                      ->select('u.id_puesto', 'p.jerarquia')

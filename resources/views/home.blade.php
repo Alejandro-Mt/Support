@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex,nofollow">
     <title>Indicadores</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset("assets/images/topicon.png")}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset("assets/images/new_logo_3ti.png")}}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{asset("assets/extra-libs/DataTables/css/dataTables.bootstrap4.css")}}"/>
     <link rel="stylesheet" href="{{asset("assets/libs/fullcalendar/dist/fullcalendar.min.css")}}"  />
@@ -93,8 +93,6 @@
     <script src="{{asset("assets/js/custom.min.js")}}"></script>
     <script src="{{asset("assets/libs/jquery-steps/build/jquery.steps.min.js")}}"></script>
     <script src="{{asset("assets/libs/jquery-validation/dist/jquery.validate.min.js")}}"></script>
-    <!-- Custom JavaScript -
-    <script src="{{asset("assets/libs/apexcharts/dist/apexcharts.min.js")}}"></script>
     <!--This page JavaScript -->
     <!-- <script src="{{asset("assets/js/pages/dashboards/dashboard1.js")}}"></script> -
     <script src="{{asset("assets/js/pages/dashboards/dashboard2.js")}}"></script>-->
