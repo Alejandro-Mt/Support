@@ -52,7 +52,7 @@ Route::post('/profile', [ProfileController::class, 'update'])->name('Actualiza')
 Route::get('/profile/{id}', [ProfileController::class, 'edit'])->middleware('auth')->name('profile');
 Route::post('user.pass',[ProfileController::class, 'updatepass'])->middleware('auth')->name('UsrPass');
 #          prioridades         #
-Route::get('prioridad.solicitudes', [PrioridadController::class, 'index'])->name('AutP');
+Route::get('prioridad.solicitudes', [PrioridadController::class, 'index'])->middleware('auth')->name('AutP');
 Route::get('autorizacion.prioridad.{id}', [PrioridadController::class, 'update'])->name('AutR');
 
 #          Catalogo         #
