@@ -57,7 +57,7 @@
               </div>
             </div>
             <a class="btn btn-success btn-sm ml-auto text-white" data-bs-toggle="modal" data-bs-target="#aut{{$solicitud->id}}">
-              Autorizacion
+              Respuesta de solicitud
             </a>
           </div>
           <!-- Modal -->
