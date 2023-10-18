@@ -18,13 +18,16 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'nombre',
-        'apaterno',
-        'amaterno',
+        'a_pat',
+        'a_mat',
         'email',
         'password',
-        'id_puesto',
-        'id_area',
-        'avatar'
+        'rol_id',
+        'jerarquia_id',
+        'avatar',
+        'external_id',
+        'remember_token',
+        'token_google',
     ];
 
     /**
@@ -45,8 +48,20 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Define la relación belongsTo con el modelo Rol
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class, 'rol_id','id');
+    }
+
+    // Define la relación belongsTo con el modelo Jerarquia
+    public function jerarquia()
+    {
+        return $this->belongsTo(Jerarquia::class, 'jerarquia_id');
+    }
     public function getFullnameAttribute()
-  {
-      return "{$this->nombre} {$this->apaterno} {$this->amaterno}";
-  }
+    {
+        return "{$this->nombre} {$this->apaterno} {$this->amaterno}";
+    }
 }

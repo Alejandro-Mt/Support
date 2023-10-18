@@ -1,14 +1,17 @@
 @component('mail::message')
-@foreach ($datos as $dato)
-# {{$dato->folio}} {{$dato->descripcion}}
-@if ($dato->fechaaut == NULL)
-El cliente ha rechazado la propuesta de requerimiento, se recomienda contactar para mayor información.   
+# {{$datos->folio}} {{$datos->descripcion}} #
+@if ($datos->id_estatus == 9)
+@if ($datos->fechades == NULL)
+<p>El cliente ha rechazado la Definición de requerimiento, se recomienda contactar para mayor información.</p>
 @else
-El requerimiento ha sido autorizado
-
-{{$dato->nombre_r}} {{$dato->apellidos}}
+<p>La definición ha sido autorizada por el cliente.</p>
 @endif
-@endforeach
+@elseif ($datos->fechaaut == NULL)
+<p>El cliente ha rechazado la propuesta de requerimiento, se recomienda contactar para mayor información.</p>
+@else
+<p>El requerimiento ha sido autorizado</p>
+{{$datos->nombre_r}} {{$datos->apellidos}}
+@endif
 
 <br>
 {{ config('app.name') }}

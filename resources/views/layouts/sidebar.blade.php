@@ -2,7 +2,7 @@
 <!-- ============================================================== -->
 <!-- Left Sidebar - style you can find in sidebar.scss  -->
 <!-- ============================================================== -->
-<aside class="left-sidebar">
+<aside class="left-sidebar" id="left-sidebar" data-sidebarbg={{Auth::user()->sidebar_color}}>
     <!-- Sidebar scroll-->
     <div class="scroll-sidebar">
         <!-- Sidebar navigation-->
@@ -36,21 +36,14 @@
                             </a>
                         </li>
                     </ul>
-                </li>-->
+                </li>
                 <li class="sidebar-item"> 
                     <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="{{route('Editar')}}" aria-expanded="false">
                         <i class="mdi mdi-chart-bar"></i>
                         <span class="hide-menu">Análisis</span>
                     </a>
-                </li>
-                <li class="sidebar-item"> 
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="{{route('Editar')}}" aria-expanded="false">
-                        <i class="mdi mdi-chart-bubble"></i>
-                        <span class="hide-menu">Requerimientos</span>
-                    </a>
-                </li>
+                </li>-->
                 <li class="sidebar-item"> 
                     <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="{{route('Admsol')}}" aria-expanded="false">
@@ -58,7 +51,16 @@
                         <span class="hide-menu">Solicitud cliente</span>
                     </a>
                 </li>
-                <!--<li class="sidebar-item"> 
+                <!--@if(Auth::user()->id_area == 6)
+                <li class="sidebar-item"> 
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                        href="{{route('Editar')}}" aria-expanded="false">
+                        <i class="mdi mdi-chart-bubble"></i>
+                        <span class="hide-menu">Requerimientos</span>
+                    </a>
+                </li>
+                @endif
+                <li class="sidebar-item"> 
                     <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="grid.html" aria-expanded="false">
                         <i class="mdi mdi-blur-linear"></i>

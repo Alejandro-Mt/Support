@@ -199,15 +199,16 @@ _____________________________________________________
 </tr>
 </table>
 <table>
-<tr align="right">@component('mail::button', ['url' => route('Archivo',$dato->folio)])Ver PDF @endcomponent</tr>
+<tr align="right">@component('mail::button', ['url' => route('Archivo',Crypt::encrypt($dato->folio))])Ver PDF @endcomponent</tr>
 @if ($dato->estatus == 10)
 <tr>
 <td>@component('mail::button', ['url' => route('Rechazo',$dato->folio)])Rechazar @endcomponent</td>
 <td>@component('mail::button', ['url' => route('Respuesta',$dato->folio)])Autorizar @endcomponent</td> 
 </tr> 
 @else
-<td>@component('mail::button', ['url' => route('Requiere',$dato->folio)])Con MT @endcomponent</td>
-<td>@component('mail::button', ['url' => route('Libera',$dato->folio)])Sin MT @endcomponent</td>
+<td>@component('mail::button', ['url' => route('DPrioridad',[$dato->folio,'1'])])Baja @endcomponent</td>
+<td>@component('mail::button', ['url' => route('DPrioridad',[$dato->folio,'2'])])Media @endcomponent</td>
+<td>@component('mail::button', ['url' => route('DPrioridad',[$dato->folio,'3'])])Alta @endcomponent</td>
 @endif
 </table>
 @endforeach
