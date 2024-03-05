@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Puesto extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id_puesto';
+    protected $fillable = [
+        'nombre',
+        'activo'
+    ];
 }

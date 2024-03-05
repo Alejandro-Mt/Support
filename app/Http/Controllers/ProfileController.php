@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\registro;
+use App\Models\Ticket;
 use App\Models\User;
+use App\Models\Usr_data;
 use GuzzleHttp\Psr7\Message;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +19,7 @@ class ProfileController extends Controller
     //
     public function edit()
     {
-        $data = user::select('nombre','apaterno','avatar','p.puesto')
+       /* $data = user::select('nombre','apaterno','avatar','p.puesto')
                     ->leftjoin('puestos as p','users.id_puesto','p.id_puesto')
                     ->where('id', auth::user()->id)->get();
         $fechas = db::table('registros as r')
@@ -60,51 +62,20 @@ class ProfileController extends Controller
                     ->LEFTJOIN ('estatus as e', 'r.id_estatus', 'e.id_estatus')
                     ->LEFTJOIN ('responsables as re', 'r.id_responsable', 're.id_responsable')
                     ->get();
-        $folios = 
-        registro::
-          select(
-            db::raw("concat(res.nombre_r,' ',res.apellidos) as responsable"),
-            db::raw("concat(arq.nombre_r,' ',arq.apellidos) as arquitecto"),
-            db::raw("concat(folio,'-',descripcion) as titulo"),
-            db::raw(
-              'IF(registros.id_estatus = 17, "requerimiento",
-                IF(registros.id_estatus in (10,16), "levantamiento",
-                  IF(registros.id_estatus in (11,9,7), "construccion",
-                    IF(registros.id_estatus = 8, "liberacion",
-                      IF(registros.id_estatus = 2, "implementacion",
-                        IF(registros.id_estatus in (13,14), "cancelado", "implementado")
-                      )
-                    )
-                  )
-                )
-              ) as estatus'
-            ),
-            db::raw("IFNULL(ures.avatar, 'assets/images/users/1.jpg') as img_resp"),
-            db::raw("IFNULL(uarq.avatar, 'assets/images/users/1.jpg') as img_arq"),
-            'registros.id_cliente'
-          )
-          ->leftjoin('responsables as res', 'registros.id_responsable', 'res.id_responsable')
-          ->leftjoin('responsables as arq', 'registros.id_arquitecto', 'arq.id_responsable')
-          ->leftjoin('users as ures', 'res.email', 'ures.email')
-          ->leftjoin('users as uarq', 'arq.email', 'uarq.email')
-          ->where([['res.email', Auth::user()->email],
-              ['registros.id_estatus','!=','18']
-            ])
-          ->orderby('registros.id_registro','desc')
-          ->paginate(3);
-        return view('profile',compact('data','fechas','folios'));
+        $folios = Ticket::all();*/
+        return view('profile'/*,compact('data','fechas','folios')*/);
         #return $folios;
     }
 
     public function update(Request $data){
-        $user = Auth::user();
-        $avatar = str_replace('storage','public',$user->avatar);
+        $avatar = str_replace('storage','public',Auth::user()->usrdata->avatar);
         Storage::delete($avatar);
         $data->validate(['avatar'=>'required|image|max:2048']);
-        $update = User::findOrFail($user->id);
-        $update->avatar = storage::url($data->file('avatar')->store('public/avatar'));
+        $nuevaRuta = $data->file('avatar')->store('public/avatar/'.Auth::user()->id_user);
+        $update = Usr_data::where('id_user',Auth::user()->id_user)->first();
+        $update->avatar = storage::url($nuevaRuta);
         $update->save(); 
-        return redirect(route('profile',$user->id));
+        return redirect(route('profile',Auth::user()->id_user));
         #return $data->avatar;
     }
 

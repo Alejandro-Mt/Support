@@ -9,60 +9,96 @@ use Illuminate\Support\Facades\Auth;
 class Ticket extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'folio',
-        'nombre_cl',
-        'a_pat_cl',
-        'a_mat_cl',
-        'movil',
         'fecha_reporte',
-        'cliente_id',
-        'localidad_id',
-        'sistema_id',
-        'so_id',
-        'incidencia_id',
-        'area_id',
-        'reportante_id',
-        'usuario_id',
+        'id_cliente',
+        'id_localidad',
+        'id_sistema',
+        'id_so',
+        'id_incidencia',
+        'id_solicitante',
+        'nivel',
+        'id_estatus',
+        'id_area',
+        'id_cc',
+        'id_pip',
+        'id_op',
+        'id_arq',
 
     ];
 
     protected $dates = ['created_at', 'updated_at'];
 
-    public function user()
+    public function allComentarios()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
-
-    public function incidencia()
-    {
-        return $this->belongsTo(Incidencia::class, 'incidencia_id','id');
+        return $this->hasMany(Comentario::class, 'folio', 'folio')->latest('created_at');
     }
 
     public function cliente()
     {
-        return $this->belongsTo(Cliente::class, 'cliente_id','id');
+        return $this->belongsTo(Cliente::class, 'id_cliente','id_cliente');
     }
 
-    public function sistema()
+    public function comentario()
     {
-        return $this->belongsTo(Sistema::class, 'sistema_id','id');
+        return $this->hasOne(Comentario::class, 'folio', 'folio')->latest();
+        #return $this->belongsTo(Comentario::class,'folio','folio');
     }
 
     public function estatus()
     {
-        return $this->belongsTo(Estado::class, 'estatus_id','id');
+        return $this->belongsTo(Estatus::class, 'id_estatus','id_estatus');
     }
 
-    public function area()
+    public function incidencia()
     {
-        return $this->belongsTo(Area::class, 'area_id','id');
+        return $this->belongsTo(Incidencia::class, 'id_incidencia','id_incidencia');
+    }
+
+    public function localidad()
+    {
+        return $this->belongsTo(Localidad::class, 'id_localidad','id_localidad');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Rol::class,'id_rol','id_rol');
+    }
+
+    public function sistema()
+    {
+        return $this->belongsTo(Sistema::class, 'id_sistema','id_sistema');
+    }
+
+    public function solicitante()
+    {
+        return $this->belongsTo(User::class,'id_solicitante','id_user');
+    }
+
+    public function so()
+    {
+        return $this->belongsTo(SO::class,'id_so','id_so');
+    }
+
+    public function rCC()
+    {
+        return $this->belongsTo(User::class,'id_cc','id_user');
+    }
+
+    public function rPIP()
+    {
+        return $this->belongsTo(User::class,'id_pip','id_user');
+    }
+
+    public function rOP()
+    {
+        return $this->belongsTo(User::class,'id_op','id_user');
+    }
+
+    public function rAR()
+    {
+        return $this->belongsTo(User::class,'id_arq','id_user');
     }
 
     protected static function boot()
@@ -71,7 +107,7 @@ class Ticket extends Model
 
         static::creating(function ($ticket) {
             // Obtener el prefijo del rol seleccionado
-            $prefijo = Auth::user()->rol->prefijo;
+            $prefijo = Auth::user()->usrdata->rol->prefijo;
             // Obtener el año actual y tomar los últimos 2 dígitos
             $anio = date('y');
             // Obtener el máximo número autoincrementable actual con el mismo prefijo y año

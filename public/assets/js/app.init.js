@@ -1,8 +1,8 @@
 $(function () {
   "use strict";
-  var lb = $('#nav-header').attr('data-logobg');
-  var nb = $('#navbarSupportedContent').attr('data-navbarbg');;
-  var sc = $('#left-sidebar').attr('data-sidebarbg');
+  var lb = 'skin5' //$('#nav-header').attr('data-logobg');
+  var nb = 'skin5' //$('#navbarSupportedContent').attr('data-navbarbg');;
+  var sc = 'skin5' //$('#left-sidebar').attr('data-sidebarbg');
   $("#main-wrapper").AdminSettings({
     Theme: false, // this can be true or false ( true means dark and false means light ),
     Layout: "vertical",

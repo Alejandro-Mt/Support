@@ -1,6 +1,6 @@
 <header class="topbar">
   <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-    <div class="navbar-header" id="nav-header" data-logobg={{Auth::user()->logo_color}}> 
+    <div class="navbar-header" id="nav-header"> 
       <a class="nav-toggler waves-effect waves-light d-block d-md-none">
         <i class="ri-close-line fs-6 ri-menu-2-line"></i>
       </a> 
@@ -41,7 +41,7 @@
     <!-- ============================================================== -->
     <!-- End Logo -->
     <!-- ============================================================== -->
-    <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg={{Auth::user()->nav_color}}>
+    <div class="navbar-collapse collapse" id="navbarSupportedContent">
       <!-- ============================================================== -->
       <!-- toggle and nav items -->
       <!-- ============================================================== -->
@@ -61,10 +61,9 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item mdi mdi-hand-pointing-right" href="{{ route('Formulario_Soporte') }}">Nueva solicitud</a></li>
-            <!--<li><a class="dropdown-item" href="{{('formatos.incidencias.new')}}">Incidencia</a></li>
-            <li><a class="dropdown-item mdi mdi-chart-areaspline" href="{route('NuevaMaqueta')}}">Maquetado</a></li>-->
-            <!--<li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item mdi mdi-developer-board" href="{route('Editar')}}">Seguimiento</a></li>-->
+            @if(Auth::user()->usrdata->rol->id_rol === 2 || Auth::user()->usrdata->rol->id_rol === 4)
+              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#Importar">Carga masiva</a></li>
+            @endif
           </ul>
         </li>
         <!-- ============================================================== -->
@@ -172,41 +171,41 @@
         <!-- ============================================================== -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            @if (Auth::user()->avatar == NULL)
-              <img src="{{asset("assets/images/users/1.jpg")}}" alt="user" class="profile-pic rounded-circle" width="30"/> 
+            @if (Auth::user()->usrdata->avatar)
+              <img src="{{asset(Auth::user()->usrdata->avatar)}}" alt="user" class="profile-pic rounded-circle" width="30"/>
             @else
-              <img src="{{asset(Auth::user()->avatar)}}" alt="user" class="profile-pic rounded-circle" width="30"/>    
+              <img src="{{asset("assets/images/users/1.jpg")}}" alt="user" class="profile-pic rounded-circle" width="30"/>
             @endif
           </a>
           <div class="dropdown-menu dropdown-menu-end user-dd animated flipInY">
             <div class="d-flex no-block align-items-center p-3 bg-primary text-white mb-2">
               <div class="">
-                @if (Auth::user()->avatar == NULL)
-                  <img src="{{asset("assets/images/users/1.jpg")}}" alt="user" class="rounded-circle" width="60"/> 
+                @if (Auth::user()->usrdata->avatar)
+                  <img src="{{asset(Auth::user()->usrdata->avatar)}}" alt="user" class="rounded-circle" width="60"/> 
                 @else
-                  <img src="{{asset(Auth::user()->avatar)}}" alt="user" class="rounded-circle" width="60"/>    
+                  <img src="{{asset("assets/images/users/1.jpg")}}" alt="user" class="rounded-circle" width="60"/>    
                 @endif
               </div>
               <div class="ms-2">
-                <h4 class="mb-0 text-white">{{Auth::user()->nombre}} {{Auth::user()->apaterno}}</h4>
+                <h4 class="mb-0 text-white">{{Auth::user()->nombreCompleto()}}</h4>
                 <p id="id" class="mb-0">{{Auth::user()->email}}</p>
               </div>
             </div>
-            <a class="dropdown-item" href="{{route('profile',Auth::user()->id)}}">
+            <a class="dropdown-item" href="{{route('profile',Auth::user()->id_user)}}">
               <i data-feather="user" class="feather-sm text-info me-1 ms-1"></i>
               Perfil
             </a>
-            @if (Auth::user()->id_puesto > 3)
-              <a class="dropdown-item d-flex d-block" href="{route('Importancia')}}">
-                <i class="fas fa-sitemap"></i>
-                  <span class="ms-1">Prioridad de clientes</span>
+            @if (Auth::user()->usrdata->id_rol > 3)
+              <a class="dropdown-item d-flex d-block" href="{{route('Reporte')}}">
+                <i class="ri-file-excel-2-line ms-s"></i>
+                  <span class="ms-1">Reporte de tickets</span>
               </a>
-              <a class="dropdown-item d-flex d-block" href="{route('AutP')}}">
+            @endif
+              <!--<a class="dropdown-item d-flex d-block" href="{route('AutP')}}">
                 <i class="feather-icon" data-feather="archive"></i>
                 <span class="ms-1">Autorización a prioridades</span>
               </a>
-            @endif
-            <!--<a class="dropdown-item" href="javascript:void(0)"><i class="ti-email me-1 ms-1"></i>Inbox</a>
+            <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email me-1 ms-1"></i>Inbox</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings me-1 ms-1"></i> Account Setting</a>
             <div class="dropdown-divider"></div>-->
@@ -228,3 +227,5 @@
     </div>
   </nav>
 </header>
+
+@include('soporte.desplegables.importar');

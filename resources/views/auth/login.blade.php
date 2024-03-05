@@ -9,7 +9,14 @@
       <!-- -------------------------------------------------------------- -->
       <!-- Login box.scss -->
       <!-- -------------------------------------------------------------- -->
-      <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-image" style="background: url({{asset('assets/images/bg_log_in.png')}}) no-repeat center center">
+      <div class="alert-wrapper justify-content-center text-center">
+          @if($errors->has('login'))
+            <div class="alert alert-danger">
+              {{ $errors->first('login') }}
+            </div>
+          @endif
+        </div>
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-image" style="background: url({{asset('assets/images/bg_log_in2.png')}}) no-repeat center center">
         <div class="auth-box card">
           <div id="loginform">
             <div class="logo">
@@ -69,9 +76,12 @@
                         <!--<a href="javascript:void(0)" class="btn btn-facebook" data-bs-toggle="tooltip" title="" data-original-title="Login with Facebook">
                           <i aria-hidden="true" class="ri-facebook-box-fill fs-4"></i>
                         </a>-->
-                        <a href={{ route('auth.google') }} class="btn btn-googleplus">
-                          <i aria-hidden="true" class="ri-google-fill fs-4"></i>
+                        <a href={{ route('auth.google') }} class="btn btn-light-danger text-danger d-flex align-items-center justify-content-center">
+                          <i class="ri-google-fill fs-4"></i>
                         </a>
+                        <!--<a href={{ route('auth.google') }} class="btn btn-googleplus">
+                          <i aria-hidden="true" class="ri-google-fill fs-4"></i>
+                        </a>-->
                       </div>
                     </div>
                   </div>

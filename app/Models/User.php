@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -16,18 +17,14 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
+    protected $primaryKey = 'id_user';
     protected $fillable = [
         'nombre',
         'a_pat',
         'a_mat',
         'email',
         'password',
-        'rol_id',
-        'jerarquia_id',
-        'avatar',
-        'external_id',
-        'remember_token',
-        'token_google',
+        'activo'
     ];
 
     /**
@@ -49,19 +46,24 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    // Define la relación belongsTo con el modelo Rol
-    public function rol()
-    {
-        return $this->belongsTo(Rol::class, 'rol_id','id');
+    public function nombreCompleto(){
+        return "{$this->nombre} {$this->a_pat} {$this->a_mat}";
     }
 
-    // Define la relación belongsTo con el modelo Jerarquia
-    public function jerarquia()
-    {
-        return $this->belongsTo(Jerarquia::class, 'jerarquia_id');
+    public function usrdata(){
+        return $this->belongsTo(Usr_data::class, 'id_user', 'id_user');
     }
-    public function getFullnameAttribute()
+
+    public function usrdpto()
     {
-        return "{$this->nombre} {$this->apaterno} {$this->amaterno}";
+        return  User::join('usr_data as ud','users.id_user','ud.id_user')->where('ud.id_departamento',Auth::user()->usrdata->id_departamento)->get();
+    }
+    public function Tickets()
+    {
+        return Ticket::where(function ($query) {
+            $query->where('id_solicitante', $this->id_user)
+                ->orWhere('id_cc', $this->id_user)
+                ->orWhere('id_pip', $this->id_user);
+        })->get();
     }
 }

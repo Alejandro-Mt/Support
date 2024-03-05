@@ -1,4 +1,7 @@
 @extends('home')
+
+<link rel="stylesheet" href="{{asset("assets/libs/bootstrap/dist/css/bootstrap.min.css")}}">
+<link rel="stylesheet" href="{{asset("assets/css/style.min.css")}}">
 @section('content')
     <div class="container-fluid">
       <!-- Start Row -->
@@ -33,33 +36,32 @@
                   </div>
                 </div>
               @enderror
-              @foreach ($data as $dato)
                 <div class="my-3">
-                  @if ($dato->avatar == NULL)
-                    <img src="{{asset("assets/images/users/1.jpg")}}" alt="user" width="128" class="rounded-circle shadow"/>    
+                  @if (Auth::user()->usrdata->avatar)
+                    <img src="{{asset(Auth::user()->usrdata->avatar)}}" alt="user" width="128" class="rounded-circle shadow"/>
                   @else
-                    <img src="{{asset($dato->avatar)}}" alt="user" width="128" class="rounded-circle shadow"/>   
+                    <img src="{{asset("assets/images/users/1.jpg")}}" alt="user" width="128" class="rounded-circle shadow"/>
                   @endif
                 </div>
-                <h3 class="mb-0">{{$dato->nombre}} {{$dato->apaterno}}</h3>
-                <h6 class="text-muted">{{$dato->puesto}}</h6>
+                <h3 class="mb-0">{{Auth::user()->nombreCompleto()}}</h3>
+                <h6 class="text-muted">{{Auth::user()->usrdata->puesto->nombre}}</h6>
                 <ul class="list-inline social-icons mt-4">
                   <li class="list-inline-item">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#add-new-event">
                       <i class="ri-edit-2-fill"></i>
                     </a>
                   </li>
-                  @if(Auth::user()->id_puesto == 7)
+                  @if(Auth::user()->usrdata->rol->id_rol == 4)
                     <li class="list-inline-item">
-                      <a href="{{route('Ajustes')}}">
+                      <a href="{{route('UserAdmon')}}">
                         <i class="ri-user-settings-line"></i>
                       </a>
                     </li>
-                    <li class="list-inline-item">
-                      <a href="{{route('Seguir')}}">
+                    <!--<li class="list-inline-item">
+                      <a href="{route('Seguir')}}">
                         <i class="ri-settings-5-line"></i>
                       </a>
-                    </li>
+                    </li>-->
                   @endif
                   <!--<li class="list-inline-item">
                     <a href="javascript:void(0)">
@@ -77,83 +79,82 @@
                     </a>
                   </li>-->
                 </ul>
-              @endforeach
-                <!-- BEGIN MODAL -->
-                <div class="modal" id="add-new-event">
-                  <div class="modal-dialog">
-                      <div class="modal-content">
-                          <div class="modal-header d-flex align-items-center">
-                            <h4 class="modal-title">
-                              <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#img" role="tab" aria-controls="home5" aria-expanded="true">
-                                        <span>Cambiar Imagen</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#pass" role="tab" aria-controls="profile">
-                                        <span>Actualizar Contraseña</span>
-                                    </a>
-                                </li>
-                              </ul>
-                            </h4>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="tab-content tabcontent-border p-3" id="myTabContent">
-                            <div role="tabpanel" class="tab-pane fade show active" id="img" aria-labelledby="home-tab">
-                              <div class="modal-body">
-                                <form class="dropzone" action="{{route('Actualiza')}}" method="post" enctype="multipart/form-data" id="myAwesomeDropzone">
-                                  {{csrf_field()}}
-                                  <div class="fallback">
-                                    <input type="file" name="avatar" id="avatar" accept="image/*">
-                                  </div>
-                                </form>
-                                <button type="submit" class="btn btn-success waves-effect waves-light text-white">
-                                  <a href="{{route('profile',Auth::user()->id)}}" style="color:white"> Guardar</a>
-                                </button>
-                                <button type="button" class="btn waves-effect" data-bs-dismiss="modal"> Cancelar</button>
-                              </div>
+              <!-- BEGIN MODAL -->
+              <div class="modal" id="add-new-event">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex align-items-center">
+                          <h4 class="modal-title">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                              <li class="nav-item">
+                                  <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#img" role="tab" aria-controls="home5" aria-expanded="true">
+                                      <span>Cambiar Imagen</span>
+                                  </a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#pass" role="tab" aria-controls="profile">
+                                      <span>Actualizar Contraseña</span>
+                                  </a>
+                              </li>
+                            </ul>
+                          </h4>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="tab-content tabcontent-border p-3" id="myTabContent">
+                          <div role="tabpanel" class="tab-pane fade show active" id="img" aria-labelledby="home-tab">
+                            <div class="modal-body">
+                              <form class="dropzone" action="{{route('Actualiza')}}" method="post" enctype="multipart/form-data" id="myAwesomeDropzone">
+                                {{csrf_field()}}
+                                <div class="fallback">
+                                  <input type="file" name="avatar" id="avatar" accept="image/*">
+                                </div>
+                              </form>
+                              <button type="submit" class="btn btn-success waves-effect waves-light text-white">
+                                <a href="{{route('profile',Auth::user()->id_user)}}" style="color:white"> Guardar</a>
+                              </button>
+                              <button type="button" class="btn waves-effect" data-bs-dismiss="modal"> Cancelar</button>
                             </div>
-                              <div class="tab-pane fade" id="pass" role="tabpanel" aria-labelledby="profile-tab">
-                                <form method="POST" action="{{ route('UsrPass') }}">
-                                  @csrf
-                                  <div class="form-group row">
-                                      <label for="oldpass" class="col-md-5 col-form-label text-md-right">{{ __('Contraseña') }}</label>
-                                      <div class="col-md-6">
-                                          <input id="oldpass" type="password" class="form-control" name="oldpass" placeholder="Contraseña anterior" required autofocus>
-                                      </div>
-                                  </div>
-                                  <div class="form-group row">
-                                      <label for="password" class="col-md-5 col-form-label text-md-right">{{ __('Nueva contraseña') }}</label>
-                                      <div class="col-md-6">
-                                          <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                                          @error('password')
-                                              <span class="invalid-feedback" role="alert">
-                                                  <strong>{{ $message }}</strong>
-                                              </span>
-                                          @enderror
-                                      </div>
-                                  </div>
-                                  <div class="form-group row">
-                                      <label for="password-confirm" class="col-md-5 col-form-label text-md-right">{{ __('Confirmar contraseña') }}</label>
-                                      <div class="col-md-6">
-                                          <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                                      </div>
-                                  </div>
-                                  <div class="form-group row mb-0">
-                                      <div class="col-md-6 offset-md-4">
-                                          <button type="submit" class="btn btn-success">
-                                              {{ __('Aceptar') }}
-                                          </button>
-                                      </div>
-                                  </div>
-                                </form>
-                              </div>
                           </div>
-                      </div>
-                  </div>
+                            <div class="tab-pane fade" id="pass" role="tabpanel" aria-labelledby="profile-tab">
+                              <form method="POST" action="{{ route('UsrPass') }}">
+                                @csrf
+                                <div class="form-group row">
+                                    <label for="oldpass" class="col-md-5 col-form-label text-md-right">{{ __('Contraseña') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="oldpass" type="password" class="form-control" name="oldpass" placeholder="Contraseña anterior" required autofocus>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password" class="col-md-5 col-form-label text-md-right">{{ __('Nueva contraseña') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password-confirm" class="col-md-5 col-form-label text-md-right">{{ __('Confirmar contraseña') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0">
+                                    <div class="col-md-6 offset-md-4">
+                                        <button type="submit" class="btn btn-success">
+                                            {{ __('Aceptar') }}
+                                        </button>
+                                    </div>
+                                </div>
+                              </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- End Modal -->
+              </div>
+              <!-- End Modal -->
             </div>
             <!--<div class="text-center bg-extra-light">
               <div class="row">
@@ -181,7 +182,7 @@
             </div>-->
           </div>
         </div>
-        <div class="col-lg-6">
+        <!--<div class="col-lg-6">
           <div class="card">
             <div class="card-body">
               <div class="d-md-flex">
@@ -198,81 +199,81 @@
                     <option value="2">Mayo/Junio</option>
                     <option value="3">Julio/Agosto</option>
                   </select>
-                </div>-->
+                </div>--
               </div>
               <div class="table-responsive mt-3">
                 <table class="table v-middle no-wrap mb-0">
                   <thead>
                     <tr>
-                      @if (Auth::user()->id_area == 12)
+                      if (Auth::user()->id_area == 12)
                         <th class="border-0" colspan="2">Responsable</th>
-                      @else
+                      else
                         <th class="border-0" colspan="2">Arquitecto</th>
-                      @endif
+                      endif
                       <th class="border-0">Titulo</th>
                       <th class="border-0">Estatus</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($folios as $registro)
+                    foreach ($folios as $registro)
                       <tr>
                         <td style="width: 50px">
-                          @if (Auth::user()->id_area == 12)
+                          if (Auth::user()->id_area == 12)
                             <span>
-                              <img src="{{asset($registro->img_resp)}}" alt="user" width="50" class="rounded-circle"/>
+                              <img src="{asset($registro->img_resp)}}" alt="user" width="50" class="rounded-circle"/>
                             </span>
-                          @else
+                          else
                             <span>
-                              <img src="{{asset($registro->img_arq)}}" alt="user" width="50" class="rounded-circle"/>
+                              <img src="{asset($registro->img_arq)}}" alt="user" width="50" class="rounded-circle"/>
                             </span>
-                          @endif
+                          endif
                         </td>
                         <td>
-                          @if (Auth::user()->id_area == 12)
-                            <h6 class="mb-0 font-weight-medium">{{$registro->responsable}}</h6>
+                          if (Auth::user()->id_area == 12)
+                            <h6 class="mb-0 font-weight-medium">{$registro->responsable}}</h6>
                             <small class="text-muted">Responsable</small>
-                          @else
-                            <h6 class="mb-0 font-weight-medium">{{$registro->arquitecto}}</h6>
+                          else
+                            <h6 class="mb-0 font-weight-medium">{$registro->arquitecto}}</h6>
                             <small class="text-muted">Arquitecto</small>
-                          @endif
+                          endif
                         </td>
-                        <td>{{$registro->titulo}}</td>
+                        <td>{$registro->titulo}}</td>
                         <td>
-                          @switch($registro->estatus)
-                              @case('levantamiento')
-                                <span class="badge bg-info rounded-pill">{{$registro->estatus}}</span>
-                                @break
-                              @case('construccion')
-                                <span class="badge bg-primary rounded-pill">{{$registro->estatus}}</span>
-                                @break
-                              @case('liberacion')
-                                <span class="badge bg-secondary rounded-pill">{{$registro->estatus}}</span>
-                                @break
-                              @case('implementacion')
-                                <span class="badge bg-success rounded-pill">{{$registro->estatus}}</span>
-                                @break
-                              @case('cancelado')
-                                <span class="badge bg-danger rounded-pill">{{$registro->estatus}}</span>
-                                @break
-                              @default
-                              <span class="badge bg-dark rounded-pill">{{$registro->estatus}}</span>
-                          @endswitch
+                          switch($registro->estatus)
+                              case('levantamiento')
+                                <span class="badge bg-info rounded-pill">{$registro->estatus}}</span>
+                                break
+                              case('construccion')
+                                <span class="badge bg-primary rounded-pill">{$registro->estatus}}</span>
+                                break
+                              case('liberacion')
+                                <span class="badge bg-secondary rounded-pill">{$registro->estatus}}</span>
+                                break
+                              case('implementacion')
+                                <span class="badge bg-success rounded-pill">{$registro->estatus}}</span>
+                                break
+                              case('cancelado')
+                                <span class="badge bg-danger rounded-pill">{$registro->estatus}}</span>
+                                break
+                              default
+                              <span class="badge bg-dark rounded-pill">{$registro->estatus}}</span>
+                          endswitch
                         </td>
                       </tr>
-                    @endforeach
+                    endforeach
                     
                   </tbody>
                 </table>
               </div>
-              {{ $folios->links() }}
+              { $folios->links() }}
             </div>
           </div>
-        </div>
+        </div>-->
         <!-- -------------------------------------------------------------- -->
         <!-- Activity widget find scss into widget folder-->
         <!-- -------------------------------------------------------------- -->
       </div>
-      <!-- End Row -->
+      <!-- End Row --
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -299,22 +300,22 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($fechas as $fecha)
+                    foreach ($fechas as $fecha)
                       <tr>
-                        <td>{{$fecha->folio}}</td>
-                        <td>{{$fecha->req}}</td>
-                        <td>{{$fecha->levantamiento}}</td>
-                        <td>{{$fecha->construccion}}</td>
-                        <td>{{$fecha->liberacion}}</td>
-                        <td>{{$fecha->implementacion}}</td>
-                        <td>{{$fecha->total}}</td>
-                        <td>{{$fecha->solicitante}}</td>
-                        <td>{{$fecha->cliente}}</td>
-                        <td>{{$fecha->sistema}}</td>
-                        <td>{{$fecha->estatus}}</td>
-                        <td>{{$fecha->responsable}}</td>
+                        <td>{$fecha->folio}}</td>
+                        <td>{$fecha->req}}</td>
+                        <td>{$fecha->levantamiento}}</td>
+                        <td>{$fecha->construccion}}</td>
+                        <td>{$fecha->liberacion}}</td>
+                        <td>{$fecha->implementacion}}</td>
+                        <td>{$fecha->total}}</td>
+                        <td>{$fecha->solicitante}}</td>
+                        <td>{$fecha->cliente}}</td>
+                        <td>{$fecha->sistema}}</td>
+                        <td>{$fecha->estatus}}</td>
+                        <td>{$fecha->responsable}}</td>
                       </tr>
-                    @endforeach
+                    endforeach
                   </tbody>
                   <tfoot>
                     <th>FOLIO</th>
@@ -1524,7 +1525,23 @@
       </div>
       <!-- End Row -->
     </div>
-    
+    <!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script src="{{asset("assets/libs/jquery/dist/jquery.min.js")}}"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="{{asset("assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js")}}"></script>
+<!--Wave Effects -->
+<script src="{{asset("assets/js/waves.js")}}"></script>
+<script src="{{asset("assets/extra-libs/DataTables/js/jquery.dataTables.min.js")}}"></script>
+
+<script>
+  $(function(){
+    $('form').submit(function(){
+      $(':submit').attr('disabled', 'disabled');
+    })
+  });
+</script>
     <link rel="stylesheet" type="text/css" href="../../assets/libs/dropzone/dist/min/dropzone.min.css"/>
     <script src="../../assets/libs/dropzone/dist/min/dropzone.min.js"></script>
     <!-- -------------------------------------------------------------- -->

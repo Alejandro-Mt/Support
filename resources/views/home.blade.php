@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset("assets/images/logo-icon-it.png")}}">
     
 </head>
-<body @if(Auth::user()->theme == 1) data-theme="dark" @endif>
+<body data-theme="dark" >
 	<!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->

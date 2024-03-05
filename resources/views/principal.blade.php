@@ -1,65 +1,57 @@
 @extends('home')
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{{asset("assets/extra-libs/DataTables/css/dataTables.bootstrap4.css")}}"/>
+<link rel="stylesheet" href="{{asset("assets/extra-libs/toastr/dist/build/toastr.min.css")}}"/>
 <link rel="stylesheet" href="{{asset("assets/libs/bootstrap/dist/css/bootstrap.min.css")}}">
 <link rel="stylesheet" href="{{asset("assets/css/style.min.css")}}">
 @section('content')
-  
-  <!--@ if(Auth::user()->id_puesto > 3)-->
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="table-responsive">
-              <table id="excel" class="table table-striped table-bordered display text-nowrap" style="width: 100%">
-                <thead>
-                  <tr>
-                    <th class="header">LISTA</th>
-                    <th class="header">FOLIO</th>
-                    <th class="header">SOLICITANTE</th>
-                    <th class="header">DESCRIPCIÓN</th>
-                    <th class="header">NIVEL</th>
-                    <th class="header">SISTEMA</th>
-                    <th class="header">CLIENTE</th>
-                    <th class="header">COMENTARIO</th>
-                    <th class="header">ESTATUS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach ($tabla as $registro)
-                  <tr>
-                    <td>{{$registro->id}}</td>
-                    <td><a href="" style="color:rgb(85, 85, 85)">{{$registro->folio}}</a></td>
-                    <td>{{$registro->nombre_cl}}</td>
-                    <td>{{$registro->incidencia->nombre}}</td>
-                    <td>clase</td>
-                    <td>{{$registro->sistema->nombre}}</td>
-                    <td>{{$registro->cliente->nombre}}</td>
-                    <td>comentario</td>
-                    <td>estatus</td>
-                  </tr>
-                  @endforeach
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th>LISTA</th>
-                    <th>FOLIO</th>
-                    <th>SOLICITANTE</th>
-                    <th>DESCRIPCIÓN</th>
-                    <th>NIVEL</th>
-                    <th>SISTEMA</th>
-                    <th>CLIENTE</th>
-                    <th>COMENTARIO</th>
-                    <th>ESTATUS</th>
-                  </tr>
-                </tfoot>
-              </table>
+@if (session('success'))
+    <input class="d-none" id="folio" value={{ session('success') }}>
+    <script>
+        $(document).ready(function(){
+            toastr.success(
+                "N° folio: " + $("#folio").val(),
+                "¡Guardado!",
+                { showMethod: "slideDown", hideMethod: "slideUp", timeOut: 2000 }
+            );
+        });
+    </script>
+@endif
+<!--@ if(Auth::user()->id_puesto > 3)-->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-title">  
+          <div class="row">
+            <!-- Titulo -->
+            <!-- Contenido -->
+            <div class="nav justify-content-center">
+              <!-- Filtros -->
+              @include('layouts.menu')
+            </div>
+            <!-- tablas -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="nav justify-content-center">
+            <div class="nav tab-content mt-3" id="pills-tabContent">
+              @include('tablas.folios')
+              @include('tablas.ourfolios')
+              @include('catalogos.cliente')
+              @include('catalogos.departamento')
+              @include('catalogos.division')
+              @include('catalogos.puesto')
+              @include('catalogos.roles')
+              @include('catalogos.sistema')
+              @include('catalogos.incidencia')
             </div>
           </div>
         </div>
       </div>
     </div>
-  <!--@ endif-->
+  </div>
+<!--@ endif-->
  
 <!-- ============================================================== -->
 <!-- All Jquery -->
@@ -70,6 +62,7 @@
 <!--Wave Effects -->
 <script src="{{asset("assets/js/waves.js")}}"></script>
 <script src="{{asset("assets/extra-libs/DataTables/js/jquery.dataTables.min.js")}}"></script>
+<script src="{{asset("assets/extra-libs/toastr/dist/build/toastr.min.js")}}"></script>
 
 <script>
   $(function(){
@@ -78,33 +71,66 @@
     })
   });
 </script>
+<!--<script>
+  $(document).ready(function () {
+    $('#excel').DataTable({
+        scrollY: 500,
+        scrollX: true,
+    });
+    $(".buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel, .buttons-GSheets").addClass("btn btn-primary mr-1");
+    function exportToSheets(data){
+      $.ajax({
+        headers: {'X-CSRF-TOKEN' : "{{csrf_token()}}"},
+        type: "POST",
+        url: "gsheets",
+        data:{data:data}
+      })
+    }
+  });
+</script>
 <script>
-    $(document).ready(function () {
-      $('#excel').DataTable({
-        //dom: "Bfrtip",
-        /*buttons: ["copy", "csv", "excel", "pdf", "print",
-        {
-        text: 'GSheets',
-        className: 'buttons-GSheets',
-        action: function ( e, dt, button, config ) {
-          var data = dt.buttons.exportData();
-          exportToSheets(data);
-        }
-      }],*/
-          scrollY: 500,
-          scrollX: true,
-      });
-      $(".buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel, .buttons-GSheets").addClass("btn btn-primary mr-1");
-      function exportToSheets(data){
-        $.ajax({
-          headers: {'X-CSRF-TOKEN' : "{{csrf_token()}}"},
-          type: "POST",
-          url: "gsheets",
-          data:{data:data}
-        })
+  $(document).ready(function () {
+    var table = $('#excel').DataTable({
+      scrollY: 500,
+      scrollX: true,
+      pageLength: 10, // Establece la cantidad de registros por página
+      lengthMenu: [10, 25, 50, 75, 100], // Opciones de cantidad de registros por página
+      searching: true // Habilita la opción de búsqueda
+      //dom: 'Bfrtip', // Habilita los botones de la extensión Buttons
+      //buttons: ['copy', 'csv', 'excel', 'pdf', 'print' ],// Botones para copiar, CSV, Excel, PDF y impresión
+      /*columnDefs: [
+        { targets: '_all', className: 'editable' } // Hace todas las columnas editables
+      ],*/
+      colReorder: true, // Habilita la extensión de reordenamiento de columnas
+      "language": {
+        "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
       }
     });
-  </script>
+
+    // Para exportar a Google Sheets
+  });
+</script>-->
+<!-- Para ambas tablas 'excel' y 'ourtickets' -->
+<script src="{{asset("assets/extra-libs/DataTables/js/jquery.dataTables.min.js")}}"></script>
+<script>
+  $(document).ready(function () {
+    // Configuración común para ambas tablas
+    var commonTableOptions = {
+      scrollY: 500,
+      scrollX: true,
+      pageLength: 10,
+      lengthMenu: [10, 25, 50, 75, 100],
+      searching: true, // Habilita la opción de búsqueda
+    };
+
+    // Inicialización de DataTable para la tabla 'excel'
+    $('#excel').DataTable(commonTableOptions);
+
+    // Inicialización de DataTable para la tabla 'ourtickets'
+    $('#ourtickets').DataTable(commonTableOptions);
+  });
+</script>
+
 
   
 @endsection
