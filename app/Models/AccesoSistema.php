@@ -9,6 +9,10 @@ class AccesoSistema extends Model
 {
     use HasFactory;
     protected $table = 'acceso_sistema';
+    protected $fillable = [
+        'id_user',
+        'id_sistema'
+    ];
 
     public function userdata(){
         return $this->belongsTo(Usr_data::class, 'id_user', 'id_user');

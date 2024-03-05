@@ -17,6 +17,17 @@
         });
     </script>
 @endif
+@if (session('Usr_data'))
+  <input class="d-none" id="folio" value={{ session('Usr_data') }}>
+  <script>
+      $(document).ready(function(){
+          toastr.success(
+              "Datos actualizados!",
+              { showMethod: "slideDown", hideMethod: "slideUp", timeOut: 2000 }
+          );
+      });
+  </script>
+@endif
 <!--@ if(Auth::user()->id_puesto > 3)-->
 
   <div class="row">

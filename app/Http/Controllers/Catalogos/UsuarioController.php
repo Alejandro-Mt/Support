@@ -143,7 +143,7 @@ class UsuarioController extends Controller
             'id_rol' => $data['id_rol']
         ]);
         $user->save();
-        return redirect(route('home'))->with('success', 'Usuario actualizado exitosamente.');
+        return redirect(route('home'))->with('Usr_data', 'Usuario actualizado exitosamente.');
     }
 
     /**

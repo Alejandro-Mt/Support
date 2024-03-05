@@ -255,14 +255,13 @@
     //var name = $('#'+caja).attr('id'); //id de figura
     var create = document.getElementById(caja);
     var des = document.getElementById(caja).value;
-    //console.log(create)
     //console.log(des)
     if (create.checked == true) {
       //insert
       $.ajax({
           headers:{'X-CSRF-TOKEN' : "{{csrf_token()}}"},
           type: "POST",
-          url: "accesos."+caja
+          url: "accesosS."+caja
         });
       //console.log(1)
     }else{
@@ -270,7 +269,7 @@
       $.ajax({
           headers:{'X-CSRF-TOKEN' : "{{csrf_token()}}"},
           type: "GET",
-          url: "accesos.update."+caja
+          url: "accesosS.update."+caja
         });
     };
   }

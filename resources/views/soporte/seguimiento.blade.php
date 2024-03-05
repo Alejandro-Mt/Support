@@ -124,7 +124,7 @@
             </div>
   
             <div class="form-group row">
-              <label for="id_cc" class="col-sm-12 text-end control-label col-form-label">Responsable CC</label>
+              <label for="id_cc" class="col-sm-12 text-end control-label col-form-label">Responsable CC*</label>
               <div class= 'col-md-12'>
                 <select class="form-control @error ('id_cc') is-invalid @enderror" id="id_cc" name="id_cc" {{ $ticket->id_estatus == 5 || Auth::user()->usrdata->id_rol == 3 ? 'disabled' : '' }}>
                   <option value={{$ticket->id_cc}}>{{ $ticket->rCC ? $ticket->rCC->nombreCompleto() : 'SELECCIONAR' }}</option>
@@ -139,12 +139,12 @@
                 @enderror
               </div>
             </div>
-            
-            <div class="form-group row">
+          
+            <div class="form-group row" id="campo_id_pip">
               <label for="id_pip" class="col-sm-12 text-end control-label col-form-label">Responsable PIP*</label>
               <div class= 'col-md-12'>
-                <select class="form-control @error ('id_pip') is-invalid @enderror" id="id_pip" name="id_pip" {{ $ticket->id_estatus == 5 || Auth::user()->usrdata->id_rol == 3 ? 'disabled' : '' }}>
-                  <option value={{$ticket->id_pip}}>{{ $ticket->rPIP ? $ticket->rPIP->nombreCompleto() : 'SELECCIONAR' }}</option>
+                <select class="form-control @error ('id_pip') is-invalid @enderror" required autofocus id="id_pip" name="id_pip">
+                  <option value={{NULL}}>SELECCIONAR</option>
                   @foreach ($pip as $userpip)
                     <option value={{$userpip->id_user}}>{{$userpip->user->nombreCompleto()}}</option>
                   @endforeach
@@ -156,22 +156,9 @@
                 @enderror
               </div>
             </div>
-            
-            <div class="form-group row">
-              <label for="Comentario" class="col-sm-12 text-end control-label col-form-label">Comentarios</label>
-              <div class="col-md-12">
-                <textarea type="text" class="form-control @error('comentario') is-invalid @enderror" required autofocus id="Comentario"  {{ $ticket->id_estatus == 5 ? 'disabled' : '' }} name="comentario" rows="1" placeholder="Hasta 250 caracteres"></textarea>
-                <small class="text-muted" id="charCount">0/250 caracteres</small>
-                @error('comentario')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            </div>
 
             <div class="form-group row" id="campo_id_op">
-              <label for="id_op" class="col-sm-12 text-end control-label col-form-label">Responsable Operaciones</label>
+              <label for="id_op" class="col-sm-12 text-end control-label col-form-label">Responsable Operaciones*</label>
               <div class= 'col-md-12'>
                 <select class="form-control @error ('id_op') is-invalid @enderror" id="id_op" name="id_op" {{ $ticket->id_estatus == 5 || Auth::user()->usrdata->id_rol == 3 ? 'disabled' : '' }}>
                   <option value={{$ticket->id_op}}>{{ $ticket->rOP ? $ticket->rOp->nombreCompleto() : 'SELECCIONAR' }}</option>
@@ -188,7 +175,7 @@
             </div>
 
             <div class="form-group row" id="campo_id_arq">
-              <label for="id_arq" class="col-sm-12 text-end control-label col-form-label">Responsable Desarrollo</label>
+              <label for="id_arq" class="col-sm-12 text-end control-label col-form-label">Responsable Desarrollo*</label>
               <div class= 'col-md-12'>
                 <select class="form-control @error ('id_arq') is-invalid @enderror" id="id_arq" name="id_arq" {{ $ticket->id_estatus == 5 || Auth::user()->usrdata->id_rol == 3 ? 'disabled' : '' }}>
                   <option value={{$ticket->id_arq}}>{{ $ticket->rAR ? $ticket->rAR->nombreCompleto() : 'SELECCIONAR' }}</option>
@@ -197,6 +184,19 @@
                   @endforeach
                 </select>
                 @error('id_arq')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+            </div>
+            
+            <div class="form-group row">
+              <label for="Comentario" class="col-sm-12 text-end control-label col-form-label">Comentarios</label>
+              <div class="col-md-12">
+                <textarea type="text" class="form-control @error('comentario') is-invalid @enderror" required autofocus id="Comentario"  {{ $ticket->id_estatus == 5 ? 'disabled' : '' }} name="comentario" rows="1" placeholder="Hasta 250 caracteres"></textarea>
+                <small class="text-muted" id="charCount">0/250 caracteres</small>
+                @error('comentario')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -258,7 +258,6 @@
 <script src="{{asset("assets/libs/select2/dist/js/select2.full.min.js")}}"></script>
 
 <script>
-
   $(function(){
     $('form').submit(function(){
       $(':submit').attr('disabled', 'disabled');
@@ -273,27 +272,39 @@
       format: 'd-m-Y H:i', // Formato de fecha y hora deseado
       step: 15, // Intervalo de minutos
     });
+    
     function mostrarOcultarCampos() {
       var idEstatus = $('input[name="estatus"]:checked').val();
 
       // Ocultar ambos campos por defecto
-      $('#campo_id_op, #campo_id_arq').hide();
+      $('#campo_id_arq, #campo_id_op, #campo_id_pip').hide();
+      
+      // Eliminar el atributo required de los campos ocultos
+      $('#id_arq, #id_op, #id_pip').removeAttr('required');
+
+      // Mostrar campo ID_OP si el ID_ESTATUS es 3
+      if (idEstatus == 2) {
+        $('#campo_id_pip').show();
+        $('#id_pip').attr('required', 'required');
+      }
 
       // Mostrar campo ID_OP si el ID_ESTATUS es 3
       if (idEstatus == 3) {
         $('#campo_id_op').show();
+        $('#id_op').attr('required', 'required');
       }
 
       // Mostrar campo ID_ARQ si el ID_ESTATUS es 4
       if (idEstatus == 4) {
         $('#campo_id_arq').show();
+        $('#id_arq').attr('required', 'required');
       }
     }
 
     // Llama a la función al cargar la página
     mostrarOcultarCampos();
 
-    // Configura un evento change para detectar cambios en el estado
+      // Configura un evento change para detectar cambios en el estado
     $('input[name="estatus"]').change(function () {
       mostrarOcultarCampos();
     });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccesoController;
 use App\Http\Controllers\Catalogos\ClienteController;
 use App\Http\Controllers\Catalogos\DepartamentoController;
 use App\Http\Controllers\Catalogos\DivisionController;
@@ -45,6 +46,10 @@ Route::post('/profile', [ProfileController::class, 'update'])->name('Actualiza')
 Route::get(substr(Crypt::encryptString('/profile'), 0, 3).'{id}', [ProfileController::class, 'edit'])->middleware('auth')->name('profile');
 Route::post('user.pass',[ProfileController::class, 'updatepass'])->middleware('auth')->name('UsrPass');
 Route::get('configuracion', [ProfileController::class, 'settings']);
+
+##  Usuario "Accesos" ##
+route::post('accesosS.{id_user}.{id_sistema}',[AccesoController::class, 'create'])->name('AcUser');
+route::get('accesosS.update.{id_user}.{id_sistema}',[AccesoController::class, 'update'])->name('DAcUser');
 
 #          Usuarios         #
 Route::get('catalogo.usuario', [UsuarioController::class, 'store'])->middleware('auth')->name('UserAdmon');

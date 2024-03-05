@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\acceso;
+use App\Models\AccesoSistema;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,7 +26,7 @@ class AccesoController extends Controller
      */
     public function create($id_user,$id_sistema)
     {
-        acceso::create([
+        AccesoSistema::create([
             'id_user' => $id_user,
             'id_sistema'=> $id_sistema
         ]);
@@ -75,7 +76,7 @@ class AccesoController extends Controller
      */
     public function update($id_user, $id_sistema)
     {
-        $id = acceso::where([['id_user', $id_user],['id_sistema', $id_sistema]])->first();
+        $id = AccesoSistema::where([['id_user', $id_user],['id_sistema', $id_sistema]])->first();
         $id->delete();
     }
 

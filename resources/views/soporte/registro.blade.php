@@ -13,13 +13,13 @@
   <h1>Soporte</h1>
   <form method="POST" action={{ route('Reg_Sop') }}>
     {{ csrf_field() }}
-    <div class="card">
+    <div class="card {{ Auth::user()->usrdata->id_rol == 3 ? 'd-none' : '' }}"">
       <div class="card-head m-3">
         <h4>DATOS DE QUIEN REPORTA</h4>
         <h5>*Campos obligatorios</h5> 
       </div>
       <div class="card-body">
-        <div class="form-group row">
+        <div class="form-group row>
           <label for="email" class="col-sm-2 text-end control-label col-form-label">e-mail*</label>
           <div class= 'col-md-8'>
             <select class="form-control select2" {{ Auth::user()->usrdata->id_rol == 3 ? 'disabled' : '' }} id="email" name="email">
@@ -151,7 +151,7 @@
         </div>
         <br>
         <div class="form-group row">
-          <label for="Comentario" class="col-sm-2 text-end control-label col-form-label">Comentarios</label>
+          <label for="Comentario" class="col-sm-2 text-end control-label col-form-label">Comentarios*</label>
           <div class="col-md-8">
             <textarea type="text" class="form-control @error('comentario') is-invalid @enderror" required autofocus id="Comentario" name="comentario" placeholder="Hasta 250 caracteres"></textarea>
             <small class="text-muted" id="charCount">0/250 caracteres</small>
@@ -221,7 +221,7 @@
           <br>  
 
           <div class="form-group row">
-            <label for="id_cc" class="col-sm-2 text-end control-label col-form-label">Responsable CC</label>
+            <label for="id_cc" class="col-sm-2 text-end control-label col-form-label">Responsable CC*</label>
             <div class= 'col-md-8'>
               <select class="form-control @error ('id_cc') is-invalid @enderror" id="id_cc" name="id_cc">
                 <option value={{NULL}}>SELECCIONAR</option>
@@ -465,34 +465,40 @@
   });
 
   function mostrarOcultarCampos() {
-      var idEstatus = $('input[name="estatus"]:checked').val();
+    var idEstatus = $('input[name="estatus"]:checked').val();
 
-      // Ocultar ambos campos por defecto
-      $('#campo_id_arq, #campo_id_op, #campo_id_pip').hide();
+    // Ocultar ambos campos por defecto
+    $('#campo_id_arq, #campo_id_op, #campo_id_pip').hide();
 
-      // Mostrar campo ID_OP si el ID_ESTATUS es 3
-      if (idEstatus == 2) {
-        $('#campo_id_pip').show();
-      }
+    // Eliminar el atributo required de los campos ocultos
+    $('#id_arq, #id_op, #id_pip').removeAttr('required');
 
-      // Mostrar campo ID_OP si el ID_ESTATUS es 3
-      if (idEstatus == 3) {
-        $('#campo_id_op').show();
-      }
-
-      // Mostrar campo ID_ARQ si el ID_ESTATUS es 4
-      if (idEstatus == 4) {
-        $('#campo_id_arq').show();
-      }
+    // Mostrar campo ID_OP si el ID_ESTATUS es 3
+    if (idEstatus == 2) {
+      $('#campo_id_pip').show();
+      $('#id_pip').attr('required', 'required');
     }
 
-    // Llama a la función al cargar la página
-    mostrarOcultarCampos();
+    // Mostrar campo ID_OP si el ID_ESTATUS es 3
+    if (idEstatus == 3) {
+      $('#campo_id_op').show();
+      $('#id_op').attr('required', 'required');
+    }
+
+    // Mostrar campo ID_ARQ si el ID_ESTATUS es 4
+    if (idEstatus == 4) {
+      $('#campo_id_arq').show();
+      $('#id_arq').attr('required', 'required');
+    }
+  }
+
+  // Llama a la función al cargar la página
+  mostrarOcultarCampos();
 
     // Configura un evento change para detectar cambios en el estado
-    $('input[name="estatus"]').change(function () {
-      mostrarOcultarCampos();
-    });
+  $('input[name="estatus"]').change(function () {
+    mostrarOcultarCampos();
+  });
 </script>
 
 

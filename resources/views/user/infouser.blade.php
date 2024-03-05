@@ -11,7 +11,6 @@
       <div class="modal-body">
         <div class="add-user-box">
           <div class="add-user-content">
-            <form id="addContactModalTitle-{{$loop->iteration}}">
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3 user-name">
@@ -20,7 +19,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3 user-name">
-                    <input type="text" name="nombre" class="form-control text-uppercase @error ('nombre') is-invvalid @enderror" value="{{$miembro->nombre}}" required autofocus/>
+                    <input type="text" name="nombre" class="form-control text-uppercase @error ('nombre') is-invalid @enderror" value="{{$miembro->nombre}}"/>
                     @error('nombre')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -38,7 +37,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3 user-lastname">
-                    <input type="text" name="a_pat" class="form-control text-uppercase @error ('a_pat') is-invvalid @enderror" value="{{$miembro->a_pat}}" required autofocus/>
+                    <input type="text" name="a_pat" class="form-control text-uppercase @error ('a_pat') is-invalid @enderror" value="{{$miembro->a_pat}}"/>
                     @error('a_pat')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -56,7 +55,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3 user-slastname">
-                    <input type="text" name="a_mat" class="form-control text-uppercase @error ('a_mat') is-invvalid @enderror" value="{{$miembro->a_mat}}" required autofocus/>
+                    <input type="text" name="a_mat" class="form-control text-uppercase @error ('a_mat') is-invalid @enderror" value="{{$miembro->a_mat}}"/>
                     @error('a_mat')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -74,7 +73,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3 user-mail">
-                    <input type="text" name="email" class="form-control @error ('email') is-invvalid @enderror" value="{{$miembro->email}}" required autofocus/>
+                    <input type="text" name="email" class="form-control @error ('email') is-invalid @enderror" value="{{$miembro->email}}"/>
                     @error('email')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -92,7 +91,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3 user-depto">
-                    <select class="form-select @error ('id_departamento') is-invvalid @enderror" style="width: 100%; height:36px;" name="id_departamento" aria-hidden="true" required autofocus>
+                    <select class="form-select @error ('id_departamento') is-invalid @enderror" style="width: 100%; height:36px;" name="id_departamento" aria-hidden="true">
                       @if($miembro->usrdata && $miembro->usrdata->departamento)
                         <option value={{$miembro->usrdata->id_departamento}}>
                           {{$miembro->usrdata->departamento->nombre}}
@@ -121,7 +120,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3 user-div">
-                    <select class="form-select @error ('id_division') is-invvalid @enderror" style="width: 100%; height:36px;" name="id_division" aria-hidden="true" required autofocus>
+                    <select class="form-select @error ('id_division') is-invalid @enderror" style="width: 100%; height:36px;" name="id_division" aria-hidden="true">
                       @if($miembro->usrdata && $miembro->usrdata->division)
                         <option value={{$miembro->usrdata->id_division}}>
                           {{$miembro->usrdata->division->nombre}}
@@ -150,7 +149,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3 user-range">
-                    <select class="form-select @error ('id_puesto') is-invvalid @enderror" style="width: 100%; height:36px;" name="id_puesto" aria-hidden="true" required autofocus>
+                    <select class="form-select @error ('id_puesto') is-invalid @enderror" style="width: 100%; height:36px;" name="id_puesto" aria-hidden="true">
                       @if($miembro->usrdata && $miembro->usrdata->puesto)
                         <option value={{$miembro->usrdata->id_puesto}}>
                           {{$miembro->usrdata->puesto->nombre}}
@@ -179,7 +178,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3 user-rol">
-                    <select class="form-select @error ('id_rol') is-invvalid @enderror" style="width: 100%; height:36px;" name="id_rol" aria-hidden="true" required autofocus>
+                    <select class="form-select @error ('id_rol') is-invalid @enderror" style="width: 100%; height:36px;" name="id_rol" aria-hidden="true">
                       @if($miembro->usrdata && $miembro->usrdata->rol)
                         <option value={{$miembro->usrdata->id_rol}}>
                           {{$miembro->usrdata->rol->nombre}}
@@ -200,12 +199,11 @@
                   </div>
                 </div>
               </div>
-            </form>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button id="btn-edit-{{$loop->iteration}}" class="btn btn-success rounded-pill px-4">Guardar</button>
+        <button id="btn-edit-{{$loop->iteration}}" type="submit" class="btn btn-success rounded-pill px-4">Guardar</button>
         <button class="btn btn-danger rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
       </div>
     </form>
