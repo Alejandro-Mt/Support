@@ -49,10 +49,8 @@
     },
     success: function (file, response) {
       if (response && response.success) {
-        console.log(response.tickets);
         window.location.href = response.redirect_url;
       } else {
-        console.error(response.error);
         console.log("No se recibió un fileId válido en la respuesta.");
       }
     },
