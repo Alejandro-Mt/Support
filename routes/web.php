@@ -14,6 +14,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Indicadores\ReporteContoller;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Soportes\RegistroController;
+use App\Http\Controllers\Soportes\RegistroMasivoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
@@ -88,10 +89,11 @@ Route::delete('usuario.Borrar.{id_usuario}', [UsuarioController::class, 'destroy
 
 Route::get('registro',[RegistroController::class,'index'])->middleware('auth')->name('Formulario_Soporte');
 Route::post('soporte.create',[RegistroController::class,'create'])->name('Reg_Sop');
-Route::post('soporte.excel',[RegistroController::class, 'import'])->name('Importar');
 Route::get('seguimiento.{folio}',[RegistroController::class,'edit'])->middleware('auth')->name('Seguimiento_Soporte');
 Route::post('soporte.edit.{folio}',[RegistroController::class,'update'])->name('Seg_Sop');
-
+Route::get('carga.masiva',[RegistroMasivoController::class,'index'])->middleware('auth')->name('CM');
+Route::post('soporte.excel',[RegistroMasivoController::class, 'store'])->name('Importar');
+Route::post('soporte.registro.masivo',[RegistroMasivoController::class,'create'])->name('RM');
 Route::get('descargable',[ReporteContoller::class,'create'])->middleware('auth')->name('Reporte');
 //Route::get(substr(Crypt::encryptString('preregistro.datos'), 80, 5).'{folio}',[PreregistroController::class, 'show'])->name('AA');
 //route::get(substr(Crypt::encryptString('requerimiento.nuevo'), 85, 5).'{folio}',[PreregistroController::class, 'edit'])->name('NR');

@@ -60,8 +60,8 @@ class LoginController extends Controller
                 'password' => $request->input('password'),
                 'user' => $request->input($this->username()),
                 'tokenFcm' => '',
-                'idAplicacion' => 34,
-                'idAmbiente' => '2'
+                'idAplicacion' => 70,
+                'idAmbiente' => '1'
             ];
             // Enviar datos a la API externa
             
@@ -78,6 +78,7 @@ class LoginController extends Controller
                     Auth::login($finduser);
                     return redirect(route('home'));
                 }else{
+                    dd($response->json(),$usr_data);
                     return redirect()->back()->withErrors(['login' => 'Credenciales inválidas']);
                 }
             }else{
@@ -89,6 +90,7 @@ class LoginController extends Controller
                 $newUser = User::updateOrCreate(
                     ['email' => $user['correo']],
                     [
+                        'nombre'  => $nombre,
                         'a_pat'   => $a_pat,
                         'a_mat'   => $a_mat,
                         'password'=> Hash::make($request->input('password'))
@@ -96,8 +98,11 @@ class LoginController extends Controller
                 Usr_data::updateOrCreate(
                     ['id_user' => $newUser->id_user],
                     [
-                        'id_sc'=> $user['idUsuario'],
-                        'remember_token' => $user['token']]
+                        'id_sc'             => $user['idUsuario'],
+                        'id_departamento'   => empty($user['id_departamento']) ? 28 : $user['id_departamento'],
+                        'id_division'       => empty($user['id_division']) ? 3 : $user['id_division'],
+                        'id_rol'            => empty($user['id_rol']) ? 3 : $user['id_rol'],
+                        'remember_token'    => $user['token']]
                 );
                 Auth::login($newUser);
                 return redirect(route('home'));
@@ -114,18 +119,5 @@ class LoginController extends Controller
                 dd("Error: " . $errorMessage);
             }
         }
-
-        // Manejar la respuesta de la API externa
-       /* if ($response->successful()) {
-            // La autenticación fue exitosa
-            $userSC = $response->json(); // Puedes ajustar esto según la estructura de la respuesta
-            $usr_data = Usr_data::where('external_id', $userSC->id)->first();
-            dd($usr_data);
-            Auth::login($usr_data['id_user']); // Autenticar al usuario en Laravel
-            return redirect()->intended($this->redirectPath());
-        } else {
-            // La autenticación falló, redirigir con un mensaje de error
-            return redirect()->back()->withErrors(['login' => 'Credenciales inválidas']);
-        }*/
     }
 }

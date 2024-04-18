@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Soportes;
 
 use App\Http\Controllers\Controller;
-use App\Imports\TicketImport;
 use App\Models\Cliente;
 use App\Models\Comentario;
 use App\Models\Estatus;
@@ -18,7 +17,6 @@ use App\Models\Usr_data;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Facades\Excel;
 
 class RegistroController extends Controller
 {
@@ -50,77 +48,75 @@ class RegistroController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-        public function import(Request $data)
-        {
-            $file = $data->file('adjunto');
-            Excel::import(new TicketImport, $file);
-            return back()->with('message','importacion completada');
-        }
+    public function import(Request $data)
+    {
+        
+    }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $data)
-    {
-        $rol =Auth::user()->usrdata->rol->id_rol;
-        $nivel = Estatus::where('id_estatus',$data['estatus'])->first();
-        if(!$nivel->nivel) {$nivel->nivel = 1;}
-        if($rol == 3){
-            $solicitante = User::where('email',Auth::user()->email)->first();
-            $fecha_soporte = now();
-        }else{
-            $solicitante = User::where('email',$data['email'])->first();
-            $fecha_soporte = Carbon::createFromFormat('d-m-Y H:i', $data['fecha_soporte'])->format('Y-m-d H:i:s');
-        }        
-        if(!$solicitante){
-            $solicitante=Invitado::updateOrCreate(
-                ['email'    => $data['email']],
+        public function create(Request $data)
+        {
+            $rol =Auth::user()->usrdata->rol->id_rol;
+            $nivel = Estatus::where('id_estatus',$data['estatus'])->first();
+            if(!$nivel->nivel) {$nivel->nivel = 1;}
+            if($rol == 3){
+                $solicitante = User::where('email',Auth::user()->email)->first();
+                $fecha_soporte = now();
+            }else{
+                $solicitante = User::where('email',$data['email'])->first();
+                $fecha_soporte = Carbon::createFromFormat('d-m-Y H:i', $data['fecha_soporte'])->format('Y-m-d H:i:s');
+            }        
+            if(!$solicitante){
+                $solicitante=Invitado::updateOrCreate(
+                    ['email'    => $data['email']],
+                    [
+                    'nombre'  => strtoupper($data['nombre_prom']),
+                    'a_pat'   => strtoupper($data['a_pat']),
+                    'a_mat'   => strtoupper($data['a_mat']),
+                    'movil'   => $data['movil']
+                    ]
+                );
+            }
+            $ticket = Ticket::create([
+                'fecha_reporte'     => $fecha_soporte,
+                'id_cliente'        => $data['cliente'],
+                'id_localidad'      => $data['localidad'],
+                'id_sistema'        => $data['sistema'],
+                'id_so'             => $data['so'],
+                'id_incidencia'     => $data['incidencia'],
+                'id_solicitante'    => $solicitante->id_user,
+                'nivel'             => $nivel->nivel,
+                'id_estatus'        => $data['estatus'],
+                'id_departamento'   => $solicitante->usrdata->id_departamento,
+                'id_cc'             => $data['id_cc'],
+                'id_pip'            => $data['id_pip']
+            ]);
+            switch ($rol) {
+                case '1':
+                    $estCmt = 1;
+                    break;
+                case '2':
+                    $estCmt = 2;
+                    break;
+                default:
+                    $estCmt = 1;
+                    break;
+            }
+            Comentario::Create(
                 [
-                'nombre'  => strtoupper($data['nombre_prom']),
-                'a_pat'   => strtoupper($data['a_pat']),
-                'a_mat'   => strtoupper($data['a_mat']),
-                'movil'   => $data['movil']
+                'folio'     => $ticket->folio,
+                'id_user'   => Auth::user()->id_user,
+                'comentario'=> $data['comentario'],
+                'tipo'      => 'padre',
+                'id_estatus'=> $estCmt,
                 ]
             );
+            return redirect('/')->with('success', $ticket->folio);
         }
-        $ticket = Ticket::create([
-            'fecha_reporte'     => $fecha_soporte,
-            'id_cliente'        => $data['cliente'],
-            'id_localidad'      => $data['localidad'],
-            'id_sistema'        => $data['sistema'],
-            'id_so'             => $data['so'],
-            'id_incidencia'     => $data['incidencia'],
-            'id_solicitante'    => $solicitante->id_user,
-            'nivel'             => $nivel->nivel,
-            'id_estatus'        => $data['estatus'],
-            'id_departamento'   => $solicitante->usrdata->id_departamento,
-            'id_cc'             => $data['id_cc'],
-            'id_pip'            => $data['id_pip']
-        ]);
-        switch ($rol) {
-            case '1':
-                $estCmt = 1;
-                break;
-            case '2':
-                $estCmt = 2;
-                break;
-            default:
-                $estCmt = 1;
-                break;
-        }
-        Comentario::Create(
-            [
-              'folio'     => $ticket->folio,
-              'id_user'   => Auth::user()->id_user,
-              'comentario'=> $data['comentario'],
-              'tipo'      => 'padre',
-              'id_estatus'=> $estCmt,
-            ]
-        );
-        return redirect('/')->with('success', $ticket->folio);
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -130,6 +126,7 @@ class RegistroController extends Controller
      */
     public function store(Request $request)
     {
+        
     }
 
     /**

@@ -16,8 +16,7 @@
         </form> 
       </div>
       <div class="modal-footer">
-          <button type="success" class="btn btn-success waves-effect waves-light text-white">Importar</button>
-          <button type="button" class="btn waves-effect" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger waves-effect waves-light text-white" data-bs-dismiss="modal">Cancelar</button>
       </div>
     </div>
   </div>
@@ -35,7 +34,7 @@
     maxFilesize: 150, // Tamaño máximo en MB
     maxFiles: maxFiles,
     addRemoveLinks: true,
-    dictRemoveFile: "Remover",
+    dictRemoveFile: "Cambiar archivo",
     /*accept: function (file, done) {
       },*/
     removedfile: function (file) {
@@ -47,7 +46,16 @@
       });
       var _ref;
       return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
-    }
+    },
+    success: function (file, response) {
+      if (response && response.success) {
+        console.log(response.tickets);
+        window.location.href = response.redirect_url;
+      } else {
+        console.error(response.error);
+        console.log("No se recibió un fileId válido en la respuesta.");
+      }
+    },
   };
 </script>
   

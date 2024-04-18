@@ -19,7 +19,7 @@
         <h5>*Campos obligatorios</h5> 
       </div>
       <div class="card-body">
-        <div class="form-group row>
+        <div class="form-group row">
           <label for="email" class="col-sm-2 text-end control-label col-form-label">e-mail*</label>
           <div class= 'col-md-8'>
             <select class="form-control select2" {{ Auth::user()->usrdata->id_rol == 3 ? 'disabled' : '' }} id="email" name="email">
@@ -318,9 +318,7 @@
 
 <script src="{{asset("assets/js/jquery.ui.touch-punch-improved.js")}}"></script>
 <script src="{{asset("assets/js/jquery-ui.min.js")}}"></script>
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>-->
 <script src="{{asset("assets/libs/timepicker/js/jquery-ui-timepicker-addon.min.js")}}"></script>
-<!--<script src="{{asset("assets/libs/timepicker/js/es.js")}}"></script>-->
 
 <script src="{{asset("assets/libs/select2/dist/js/select2.full.min.js")}}"></script>
 

@@ -64,8 +64,11 @@ class GoogleController extends Controller
                 Usr_data::updateOrCreate(
                     ['id_user' => $newUser->id_user],
                     [
-                        'external_id'=> $user->id,
-                        'token_google' => $user->token]
+                        'id_departamento'   => 28,
+                        'id_division'       => 3,
+                        'id_rol'            => 3,
+                        'external_id'       => $user->id,
+                        'token_google'      => $user->token]
                 );
                 Auth::login($newUser);
                 return redirect(route('home'));

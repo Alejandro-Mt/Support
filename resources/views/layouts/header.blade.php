@@ -62,7 +62,7 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item mdi mdi-hand-pointing-right" href="{{ route('Formulario_Soporte') }}">Nueva solicitud</a></li>
             @if(Auth::user()->usrdata->rol->id_rol === 2 || Auth::user()->usrdata->rol->id_rol === 4)
-              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#Importar">Carga masiva</a></li>
+              <li><a class="dropdown-item" href={{route('CM')}}>Carga masiva</a></li>
             @endif
           </ul>
         </li>
@@ -206,9 +206,8 @@
                 <span class="ms-1">Autorización a prioridades</span>
               </a>
             <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email me-1 ms-1"></i>Inbox</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings me-1 ms-1"></i> Account Setting</a>
             <div class="dropdown-divider"></div>-->
+            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
               <i class="fa fa-power-off me-1 ms-1" ></i>
               {{ __('Salir') }}
