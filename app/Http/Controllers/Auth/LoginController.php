@@ -71,6 +71,7 @@ class LoginController extends Controller
             $user = $response->json();
             $usr_data = Usr_data::where('id_sc',  $user['idUsuario'])->first();
             if($usr_data){
+                dd($usr_data);
                 $usr_data->remember_token = $user['token'];
                 $usr_data->save();
                 $finduser = User::where('id_user', $usr_data->id_user)->first();
@@ -95,15 +96,24 @@ class LoginController extends Controller
                         'a_mat'   => $a_mat,
                         'password'=> Hash::make($request->input('password'))
                     ]);
-                Usr_data::updateOrCreate(
-                    ['id_user' => $newUser->id_user],
-                    [
+                    
+                $usrData = $newUser->usrData;
+                if ($usrData) {
+                    // Si ya tiene un Usr_data, actualizar los campos 'external_id' y 'token_google'
+                    $usrData->update([
+                        'remember_token'    => $user['token'],
+                        'id_sc'             => $user['idUsuario']
+                    ]);
+                } else {
+                    Usr_data::Create([
+                        'id_user'           => $newUser->id_user,
+                        'id_departamento'   => 28,
+                        'id_division'       => 3,
+                        'id_rol'            => 3,
                         'id_sc'             => $user['idUsuario'],
-                        'id_departamento'   => empty($user['id_departamento']) ? 28 : $user['id_departamento'],
-                        'id_division'       => empty($user['id_division']) ? 3 : $user['id_division'],
-                        'id_rol'            => empty($user['id_rol']) ? 3 : $user['id_rol'],
                         'remember_token'    => $user['token']]
-                );
+                    );
+                }
                 Auth::login($newUser);
                 return redirect(route('home'));
             }

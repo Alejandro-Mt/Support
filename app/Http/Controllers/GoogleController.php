@@ -61,15 +61,26 @@ class GoogleController extends Controller
                         'a_mat'   => $a_mat,
                         'password'=> Hash::make($nombre.'1%')
                     ]);
-                Usr_data::updateOrCreate(
-                    ['id_user' => $newUser->id_user],
-                    [
-                        'id_departamento'   => 28,
-                        'id_division'       => 3,
-                        'id_rol'            => 3,
-                        'external_id'       => $user->id,
-                        'token_google'      => $user->token]
-                );
+                    
+                // Obtener el Usr_data asociado al nuevo usuario
+                $usrData = $newUser->usrData;
+                if ($usrData) {
+                    // Si ya tiene un Usr_data, actualizar los campos 'external_id' y 'token_google'
+                    $usrData->update([
+                        'external_id' => $user->id,
+                        'token_google' => $user->token,
+                    ]);
+                } else {
+                // Si no tiene un Usr_data, crear uno nuevo con los campos proporcionados
+                    Usr_data::create([
+                        'id_user'         => $newUser->id_user,
+                        'id_departamento' => 28,
+                        'id_division'     => 3,
+                        'id_rol'          => 3,
+                        'external_id'     => $user->id,
+                        'token_google'    => $user->token,
+                    ]);
+                }
                 Auth::login($newUser);
                 return redirect(route('home'));
                 #dd($user->token);
