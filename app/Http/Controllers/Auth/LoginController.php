@@ -71,7 +71,6 @@ class LoginController extends Controller
             $user = $response->json();
             $usr_data = Usr_data::where('id_sc',  $user['idUsuario'])->first();
             if($usr_data){
-                dd($usr_data);
                 $usr_data->remember_token = $user['token'];
                 $usr_data->save();
                 $finduser = User::where('id_user', $usr_data->id_user)->first();
