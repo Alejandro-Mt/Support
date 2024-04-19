@@ -144,7 +144,7 @@
               <label for="id_pip" class="col-sm-12 text-end control-label col-form-label">Responsable PIP*</label>
               <div class= 'col-md-12'>
                 <select class="form-control @error ('id_pip') is-invalid @enderror" required autofocus id="id_pip" name="id_pip">
-                  <option value={{NULL}}>SELECCIONAR</option>
+                  <option value={{$ticket->id_pip}}>{{ $ticket->rPIP ? $ticket->rPIP->nombreCompleto() : 'SELECCIONAR' }}</option>
                   @foreach ($pip as $userpip)
                     <option value={{$userpip->id_user}}>{{$userpip->user->nombreCompleto()}}</option>
                   @endforeach
