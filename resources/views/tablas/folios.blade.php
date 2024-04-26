@@ -50,8 +50,8 @@
           "
           >{{$registro->folio}}</a>
         </td>
-        <td data-bs-toggle="tooltip" data-bs-placement="auto" title="Correo: {{ $registro->solicitante->email }},&#10;Teléfono: {{ 'test' }}&#10;">
-          {{$registro->solicitante->nombreCompleto()}}
+        <td data-bs-toggle="tooltip" data-bs-placement="auto" title="Correo: {{ $registro->solicitante->email ?? $registro->invitado->email}},&#10;Teléfono: {{ '' }}&#10;">
+          {{$registro->solicitante ? $registro->solicitante->nombreCompleto() : $registro->invitado->nombreCompleto()}}
         </td>
         <td>{{$registro->comentario->comentario}}</td>
         <td>{{$registro->estatus->nombre}}</td>

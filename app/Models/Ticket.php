@@ -56,6 +56,11 @@ class Ticket extends Model
         return $this->belongsTo(Incidencia::class, 'id_incidencia','id_incidencia');
     }
 
+    public function invitado()
+    {
+        return $this->belongsTo(Invitado::class, 'id_solicitante','email');
+    }
+
     public function localidad()
     {
         return $this->belongsTo(Localidad::class, 'id_localidad','id_localidad');
@@ -73,7 +78,7 @@ class Ticket extends Model
 
     public function solicitante()
     {
-        return $this->belongsTo(User::class,'id_solicitante','id_user');
+        return $this->belongsTo(User::class,'id_solicitante','email');
     }
 
     public function so()

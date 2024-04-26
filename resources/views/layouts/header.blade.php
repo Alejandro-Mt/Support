@@ -195,7 +195,7 @@
               <i data-feather="user" class="feather-sm text-info me-1 ms-1"></i>
               Perfil
             </a>
-            @if (Auth::user()->usrdata->id_rol > 3)
+            @if (Auth::user()->usrdata->id_rol == 2 || Auth::user()->usrdata->id_rol == 4)
               <a class="dropdown-item d-flex d-block" href="{{route('Reporte')}}">
                 <i class="ri-file-excel-2-line ms-s"></i>
                   <span class="ms-1">Reporte de tickets</span>

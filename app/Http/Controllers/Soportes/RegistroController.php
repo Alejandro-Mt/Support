@@ -88,10 +88,10 @@ class RegistroController extends Controller
                 'id_sistema'        => $data['sistema'],
                 'id_so'             => $data['so'],
                 'id_incidencia'     => $data['incidencia'],
-                'id_solicitante'    => $solicitante->id_user,
+                'id_solicitante'    => $solicitante->email,
                 'nivel'             => $nivel->nivel,
                 'id_estatus'        => $data['estatus'],
-                'id_departamento'   => $solicitante->usrdata->id_departamento,
+                'id_departamento'   => $solicitante->usrdata->id_departamento ?? 35,
                 'id_cc'             => $data['id_cc'],
                 'id_pip'            => $data['id_pip']
             ]);
