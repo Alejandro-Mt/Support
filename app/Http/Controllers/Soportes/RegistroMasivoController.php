@@ -8,6 +8,7 @@ use App\Models\Cliente;
 use App\Models\Comentario;
 use App\Models\Estatus;
 use App\Models\Incidencia;
+use App\Models\Invitado;
 use App\Models\Localidad;
 use App\Models\Sistema;
 use App\Models\SO;
@@ -40,7 +41,8 @@ class RegistroMasivoController extends Controller
         $pip = Usr_data::where('id_departamento',29)->get();
         $sistemas = Sistema::all();
         $sos = SO::all();
-        $users = User::all();
+        $users = User::select('nombre', 'a_pat', 'a_mat', 'email')->union(Invitado::select('nombre', 'a_pat', 'a_mat', 'email'))->get();
+
         return view('soporte.carga',compact('arq','cc','clientes','estatus','incidencias', 'tickets','localidades','ops','pip','sistemas','sos','users'));
     }
 
@@ -52,13 +54,13 @@ class RegistroMasivoController extends Controller
     public function create(Request $data)
     {
         $data->validate([
-            'cliente.*'         => 'required', 
-            'localidad.*'    => 'required',
-            'sistema.*'      => 'required',
-            'sop.*'           => 'required',
-            'incidencia.*'   => 'required',
-            'email.*'  => 'required',
-            'estatus.*'      => 'required'
+            'cliente.*'     => 'required', 
+            'localidad.*'   => 'required',
+            'sistema.*'     => 'required',
+            'sop.*'         => 'required',
+            'incidencia.*'  => 'required',
+            'email.*'       => 'required',
+            'estatus.*'     => 'required'
         ], [
             // Mensajes de error personalizados
             'cliente.*.required'         => 'El campo cliente es obligatorio.',
@@ -90,7 +92,7 @@ class RegistroMasivoController extends Controller
             Comentario::Create(
                 [
                   'folio'     => $ticket->folio,
-                  'id_user'   => $data['email'][$key],
+                  'id_user'   => is_numeric($data['email'][$key]) ? $data['email'][$key] : $responsable,
                   'comentario'=> $data['comentario'][$key],
                   'tipo'      => 'padre',
                   'id_estatus'=> $data['estatus'][$key]

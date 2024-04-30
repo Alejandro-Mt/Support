@@ -38,7 +38,7 @@ class RegistroController extends Controller
         $pip = Usr_data::where('id_departamento',29)->get();
         $sistemas = Sistema::all();
         $sos = SO::all();
-        $users = User::all();
+        $users = User::select('nombre', 'a_pat', 'a_mat', 'email')->union(Invitado::select('nombre', 'a_pat', 'a_mat', 'email'))->get();
         return view('soporte.registro',compact('arq','cc','clientes','estatus','incidencias','localidades','ops','pip','sistemas','sos','users'));
     }
 

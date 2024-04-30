@@ -48,10 +48,14 @@
           "
           >{{$registro->folio}}</a>
         </td>
-        <td data-bs-toggle="tooltip" data-bs-placement="auto" title="Correo: {{ $registro->solicitante->email ?? $registro->invitado->email}},&#10;Teléfono: {{ '' }}&#10;">
-          {{$registro->solicitante ? $registro->solicitante->nombreCompleto() : $registro->invitado->nombreCompleto()}}
+        <td data-bs-toggle="tooltip" data-bs-placement="auto" title="Correo: {{ $registro->solicitante ? $registro->solicitante->email : $registro->id_solicitante}},&#10;Teléfono: {{ $registro->invitado ? $registro->invitado->movil : 'Sin registro'}}&#10;">
+          {{$registro->solicitante ? $registro->solicitante->nombreCompleto() : $registro->id_solicitante}}
         </td>
-        <td>{{$registro->comentario->comentario}}</td>
+        <td data-bs-toggle="tooltip" title="{{ $registro->comentario->comentario }}"> 
+          <div style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">
+            <div style="max-width: 300px;">{{$registro->comentario->comentario}}</div>
+          </div>
+        </td>
         <td>{{$registro->estatus->nombre}}</td>
       </tr>
       @endforeach

@@ -136,9 +136,9 @@ function support_data(data) {
           </div>
           <div class="mb-3 col-md-2">
             <label for="Solicitante">Solicitante</label>
-            <select class="form-control select2 ${ticket.solicitante && !users.some(user => user.email.toLowerCase() === ticket.solicitante.toLowerCase()) ? 'is-invalid' : ''}" required autofocus id="email" name="email[]" autocomplete="off">
-              ${ticket.solicitante && !users.some(user => user.email.toLowerCase() === ticket.solicitante.toLowerCase()) ? `<option value="" selected>${ticket.solicitante}</option>` : ''}
-              ${users.map(user =>`<option value="${user.id_user}" ${ticket.solicitante && user.email.toLowerCase() === ticket.solicitante.toLowerCase() ? 'selected' : ''}>${user.email}</option>`).join('')}
+            <select class="form-control select2 ${ticket.solicitante && !users.some(user => user.email === ticket.solicitante) ? 'is-invalid' : ''}" required autofocus id="email" name="email[]" autocomplete="off">
+              ${ticket.solicitante && !users.some(user => user.email === ticket.solicitante) ? `<option value="${ticket.solicitante}" selected>${ticket.solicitante}</option>` : ''}
+              ${users.map(user =>`<option value="${user.email}" ${ticket.solicitante && user.email === ticket.solicitante ? 'selected' : ''}>${user.email}</option>`).join('')}
             </select>
           </div>
           <div class="mb-3 col-md-2">
@@ -253,7 +253,7 @@ function support_fields(data) {
         <label for="Solicitante">Solicitante</label>
         <select class="form-control select2" required autofocus id="email" name="email[]">
           <option value="">SELECCIONAR</option>
-          ${users.map(user => `<option value="${user.id_user}">${user.email}</option>`).join('')}
+          ${users.map(user => `<option value="${user.email}">${user.email}</option>`).join('')}
         </select>
       </div>
       <div class="mb-3 col-md-2">
