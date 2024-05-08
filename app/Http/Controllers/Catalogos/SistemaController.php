@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Catalogos;
 
 use App\Http\Controllers\Controller;
-use App\Models\sistema;
+use App\Models\Sistema;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
