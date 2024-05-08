@@ -51,7 +51,7 @@
           >{{$registro->folio}}</a>
         </td>
         <td data-bs-toggle="tooltip" data-bs-placement="auto" title="Correo: {{ $registro->solicitante ? $registro->solicitante->email : $registro->id_solicitante}},&#10;Teléfono: {{ $registro->invitado ? $registro->invitado->movil : 'Sin registro'}}&#10;">
-          {{$registro->solicitante ? $registro->solicitante->nombreCompleto() : $registro->invitado ? $registro->invitado->nombreCompleto() : $registro->email}}
+          {{$registro->solicitante ? $registro->solicitante->nombreCompleto() : $registro->id_solicitante}}
         </td>
         <td data-bs-toggle="tooltip" title="{{ $registro->comentario->comentario }}"> 
           <div style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">
