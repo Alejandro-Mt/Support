@@ -21,7 +21,8 @@ class Usr_data extends Model
         'external_id',
         'remember_token',
         'token_google',
-        'id_sc'
+        'id_sc',
+        'movil'
     ];
     public function user()
     {

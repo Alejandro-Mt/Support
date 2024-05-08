@@ -75,8 +75,7 @@ class SistemaController extends Controller
      */
     public function update(Request $data, $id_sistema)
     {
-        dd($data);
-        $update = sistema::FindOrFail($id_sistema);
+        $update = Sistema::FindOrFail($id_sistema);
         $update->nombre = $data['nombre'];
         $update->dispercion= $data['dispercion'];
         $update->activo= $data['activo'];
@@ -93,7 +92,7 @@ class SistemaController extends Controller
      */
     public function destroy($id_sistema)
     {
-        $id_sistema = sistema::find($id_sistema);
+        $id_sistema = Sistema::find($id_sistema);
         $id_sistema->delete();
         return redirect(route('Seguir'));
     }
