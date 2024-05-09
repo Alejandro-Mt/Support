@@ -12,7 +12,6 @@ class Incidencia extends Model
     protected $table = 'incidencias';
     protected $fillable = [
         'nombre',
-        'id_sistema',
         'activo'
     ];
 
