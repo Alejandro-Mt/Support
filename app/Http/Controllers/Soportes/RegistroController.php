@@ -173,11 +173,10 @@ class RegistroController extends Controller
     public function update(Request $data, $folio)
     {
         //
-        $rol =Auth::user()->usrdata->rol->id_rol;
-        $nivel = Estatus::where('id_estatus',$data['estatus'])->first();
-        if(!$nivel->nivel) {$nivel->nivel = 1;}
-        $fecha_seg = Carbon::createFromFormat('d-m-Y H:i', $data['fecha_soporte'])->format('Y-m-d H:i:s');
         $ticket = Ticket::where('folio',$folio)->first();
+        $rol =Auth::user()->usrdata->rol->id_rol;
+        if($ticket->nivel < 2){if($rol == 4 || $rol == 2) {$nivel = 2;} else {$nivel = 1;}} else {$nivel = 2;}
+        $fecha_seg = Carbon::createFromFormat('d-m-Y H:i', $data['fecha_soporte'])->format('Y-m-d H:i:s');
         if($rol != 3){
             $ticket->where('folio', $folio)->update([
                 'id_cliente'        => $data['cliente'],
@@ -185,7 +184,7 @@ class RegistroController extends Controller
                 'id_sistema'        => $data['sistema'],
                 'id_so'             => $data['so'],
                 'id_incidencia'     => $data['incidencia'],
-                'nivel'             => $nivel->nivel,
+                'nivel'             => $nivel,
                 'id_estatus'        => $data['estatus'],
                 'id_cc'             => $data['id_cc'],
                 'id_pip'            => $data['id_pip'],
