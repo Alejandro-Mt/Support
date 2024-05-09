@@ -13,5 +13,4 @@ class Puesto extends Model
         'nombre',
         'activo'
     ];
-    
 }
