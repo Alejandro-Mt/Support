@@ -259,7 +259,7 @@
             <label for="id_op" class="col-sm-2 text-end control-label col-form-label">Responsable Operaciones</label>
             <div class= 'col-md-8'>
               <select class="form-control @error ('id_op') is-invalid @enderror" id="id_op" name="id_op">
-                <option>SELECCIONAR</option>
+                <option value={{NULL}}>SELECCIONAR</option>
                 @foreach ($ops as $op)
                   <option value={{$op->id_user}}>{{$op->user->nombreCompleto()}}</option>
                 @endforeach
@@ -276,7 +276,7 @@
             <label for="id_arq" class="col-sm-2 text-end control-label col-form-label">Responsable Desarrollo</label>
             <div class= 'col-md-8'>
               <select class="form-control @error ('id_arq') is-invalid @enderror" id="id_arq" name="id_arq">
-                <option>SELECCIONAR</option>
+                <option value={{NULL}}>SELECCIONAR</option>
                 @foreach ($arq as $des)
                   <option value={{$des->id_user}}>{{$des->user->nombreCompleto()}}</option>
                 @endforeach
@@ -465,30 +465,38 @@
   function mostrarOcultarCampos() {
     var idEstatus = $('input[name="estatus"]:checked').val();
 
-    // Ocultar ambos campos por defecto
-    $('#campo_id_arq, #campo_id_op, #campo_id_pip').hide();
+    // Ocultar campos que no tienen valor
+    if (!$('#id_arq').val()) {
+        $('#campo_id_arq').hide();
+        $('#id_arq').removeAttr('required');
+    }
+    if (!$('#id_op').val()) {
+        $('#campo_id_op').hide();
+        $('#id_op').removeAttr('required');
+    }
+    if (!$('#id_pip').val()) {
+        $('#campo_id_pip').hide();
+        $('#id_pip').removeAttr('required');
+    }
 
-    // Eliminar el atributo required de los campos ocultos
-    $('#id_arq, #id_op, #id_pip').removeAttr('required');
-
-    // Mostrar campo ID_OP si el ID_ESTATUS es 3
+    // Mostrar campo ID_PIP si el ID_ESTATUS es 2
     if (idEstatus == 2) {
-      $('#campo_id_pip').show();
-      $('#id_pip').attr('required', 'required');
+        $('#campo_id_pip').show();
+        $('#id_pip').attr('required', 'required');
     }
 
     // Mostrar campo ID_OP si el ID_ESTATUS es 3
     if (idEstatus == 3) {
-      $('#campo_id_op').show();
-      $('#id_op').attr('required', 'required');
+        $('#campo_id_op').show();
+        $('#id_op').attr('required', 'required');
     }
 
     // Mostrar campo ID_ARQ si el ID_ESTATUS es 4
     if (idEstatus == 4) {
-      $('#campo_id_arq').show();
-      $('#id_arq').attr('required', 'required');
+        $('#campo_id_arq').show();
+        $('#id_arq').attr('required', 'required');
     }
-  }
+}
 
   // Llama a la función al cargar la página
   mostrarOcultarCampos();

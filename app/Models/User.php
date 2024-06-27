@@ -58,6 +58,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return  User::join('usr_data as ud','users.id_user','ud.id_user')->where('ud.id_departamento',Auth::user()->usrdata->id_departamento)->get();
     }
+    public function Pendientes()
+    {
+        return Ticket::where(function ($query) {
+            $query->where('id_solicitante', $this->id_user)
+                ->orWhere('id_cc', $this->id_user)
+                ->orWhere('id_pip', $this->id_user);
+        })->where('id_estatus', '!=', 5)->get();
+    }
     public function Tickets()
     {
         return Ticket::where(function ($query) {

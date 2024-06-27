@@ -6,14 +6,7 @@
     <!-- -------------------------------------------------------------- -->
     <!-- Login box.scss -->
     <!-- -------------------------------------------------------------- -->
-    <div class="alert-wrapper justify-content-center text-center">
-      @if($errors->has('login'))
-        <div class="alert alert-danger">
-          {{ $errors->first('login') }}
-        </div>
-      @endif
-    </div>
-    <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-image" style="background: url({{asset('assets/images/bg_log_in2.png')}}) no-repeat center center">
+    <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-image">
       <div class="auth-box card">
         <div id="loginform">
           <div class="logo">
@@ -60,6 +53,13 @@
                     </div>
                   </div>
                 </div>-->
+                <div class="alert-wrapper justify-content-center text-center">
+                  @if($errors->has('login'))
+                    <div class="alert alert-danger">
+                      {{ $errors->first('login') }}
+                    </div>
+                  @endif
+                </div>
                 <div class="mb-3 text-center">
                   <div class="col-xs-12 pb-3">
                     <button class="btn d-block w-100 btn-lg btn-info font-medium" type="submit">
@@ -127,6 +127,14 @@
     <!-- Login box.scss -->
     <!-- -------------------------------------------------------------- -->
   </div>
+  <style>
+    .bg-image {
+      background: url('{{asset('assets/images/bg_log_in2.png')}}') no-repeat center center;
+      background-size: cover;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
 @endsection 
 
 

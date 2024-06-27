@@ -88,17 +88,87 @@
         <!-- ============================================================== -->
         <!-- Comment -->
         <!-- ============================================================== -->
-        <!--<li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="mdi mdi-bell font-24"></i>
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i data-feather="bell"></i>
+            @if( Auth::user()->unreadNotifications->count() != 0 )
+              <div class="notify">
+                <span class="heartbit"></span> <span class="point"></span>
+              </div>
+            @endif
+          </a>
+          <div class="dropdown-menu dropdown-menu-end mailbox dropdown-menu-animate-up">
+            <span class="with-arrow"><span class="bg-primary"></span></span>
+            <ul class="list-style-none">
+              <li>
+                <div class="drop-title bg-primary text-white">
+                  <h4 class="mb-0 mt-1">
+                    {{ Auth::user()->unreadNotifications->count() }} {{Auth::user()->unreadNotifications->count() == 1 ? 'Nueva' : 'Nuevas'}}
+                  </h4>
+                  <span class="fw-light">{{Auth::user()->unreadNotifications->count() == 1 ? 'Notificación' : 'Notificaciones'}}</span>
+                </div>
+              </li>
+              <li>
+                <div class="message-center notifications">
+                  <!-- Message -->
+                  @foreach (Auth::user()->unreadNotifications as $notify)
+                    <a href={{ route('Visto', $notify->id) }} class="message-item">
+                      <span class="btn btn-light-success text-success btn-circle">
+                        <i data-feather="bookmark" class="feather-sm fill-white"></i>
+                      </span>
+                      <div class="mail-contnet">
+                        <h5 class="folio">{{ $notify->data['folio'] }}</h5>
+                        <span class="mail-desc">{{ $notify->data['message'] }}</span>
+                        <span class="time">{{ $notify->created_at->diffForHumans() }}</span>
+                      </div>
+                    </a>
+                  @endforeach
+                  <!-- Message --
+                  <a href="#" class="message-item">
+                    <span class="btn btn-light-success text-success btn-circle">
+                      <i data-feather="calendar" class="feather-sm fill-white"></i>
+                    </span>
+                    <div class="mail-contnet">
+                      <h5 class="message-title">Event today</h5>
+                      <span class="mail-desc">Just a reminder that you have event</span>
+                      <span class="time">9:10 AM</span>
+                    </div>
+                  </a>
+                  <!-- Message --
+                  <a href="#" class="message-item">
+                    <span class="btn btn-light-info text-info btn-circle">
+                      <i data-feather="settings" class="feather-sm fill-white"></i>
+                    </span>
+                    <div class="mail-contnet">
+                      <h5 class="message-title">Settings</h5>
+                      <span class="mail-desc"
+                        >You can customize this template as you want</span
+                      >
+                      <span class="time">9:08 AM</span>
+                    </div>
+                  </a>
+                  <!-- Message --
+                  <a href="#" class="message-item">
+                    <span class="btn btn-light-primary text-primary btn-circle">
+                      <i data-feather="users" class="feather-sm fill-white"></i>
+                    </span>
+                    <div class="mail-contnet">
+                      <h5 class="message-title">Pavan kumar</h5>
+                      <span class="mail-desc">Just see the my admin!</span>
+                      <span class="time">9:02 AM</span>
+                    </div>
+                  </a>
+                </div>
+              </li>
+              <!--<li>
+                <a class="nav-link text-center mb-1 text-dark" href="#">
+                  <strong>Check all notifications</strong>
+                  <i data-feather="chevron-right" class="feather-sm"></i>
+                </a>
+              </li>-->
             </ul>
-        </li>-->
+          </div>
+        </li>
         <!-- ============================================================== -->
         <!-- End Comment -->
         <!-- ============================================================== -->

@@ -46,6 +46,16 @@ class Ticket extends Model
         #return $this->belongsTo(Comentario::class,'folio','folio');
     }
 
+    public function comentarios()
+    {
+        return $this->hasMany(Comentario::class, 'folio', 'folio');
+    }
+
+    public function comentarioPadre()
+    {
+        return $this->comentarios()->where('tipo', 'padre')->value('comentario');
+    }
+
     public function estatus()
     {
         return $this->belongsTo(Estatus::class, 'id_estatus','id_estatus');

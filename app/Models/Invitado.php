@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Invitado extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'id_invitado';
+    protected $primaryKey = 'id_user';
     protected $fillable = [
         'nombre',
         'a_pat',

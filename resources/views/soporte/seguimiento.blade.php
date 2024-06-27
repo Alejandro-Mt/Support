@@ -240,6 +240,63 @@
         </div>
     </div>
   </div>
+  
+      
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">  
+        <div class="row">
+          <div class="col-xl-2 col-md-6 col-lg-10 d-flex align-items-center border-bottom">
+            <h4 class="card-title">
+              <a class="text-dark">
+                <span class="lstick d-inline-block align-middle"></span>
+                <strong>{{ __('DOCUMENTACIÓN') }}</strong>
+              </a>
+            </h4>
+          </div>
+          @if(Auth::user()->usrdata->id_departamento != 35)
+            <div class="col-xl-2 col-md-6 col-lg-2 d-flex align-items-center border-bottom">
+              <a  class="btn waves-effect waves-light btn-outline-success" data-bs-toggle="modal" data-bs-target="#Adjuntos">
+                <i class="feather-sm" data-feather="upload-cloud"></i>
+              </a>
+            </div>
+          @endif
+          <div class="col-md-12">
+            @foreach($archivos as $archivo)
+              @if (!Str::contains($archivo->url, 'extra') && !Str::contains($archivo->url, 'COMPLEMENTOS'))
+                <form id="{{$loop->iteration}}" method="POST" enctype="multipart/form-data" id="myAwesomeDropzone">
+                  <div class="d-flex align-items-center">
+                    <div class="icon"><i class="feather-sm" data-feather="file"></i></div>
+                    @if (Str::contains($archivo->url, 'Definición de requerimiento'))
+                      <h6 class="modal-title col-sm-10">
+                        <a data-bs-toggle="tooltip" data-bs-placement="right" title="@foreach ($def_ver as $version)Archivo: {{ pathinfo($version->url, PATHINFO_FILENAME) }} Creado en: {{ $version->created_at->format('Y-m-d H:i:s')}}.&#10; @endforeach">
+                          <strong>{{ pathinfo($archivo->url, PATHINFO_FILENAME) }}</strong>
+                          <i class="feather-sm me-2" data-feather="info"></i>
+                        </a>
+                      </h6>
+                    @else
+                      <h6 class="modal-title col-sm-10">
+                        <strong>{{pathinfo($archivo->url, PATHINFO_FILENAME)}}</strong>
+                      </h6>
+                    @endif                 
+                    <a class="btn waves-effect waves-light btn-outline-info col-sm-auto" href="{{asset("$archivo->url")}}" target="_blank">
+                      <i class="feather-sm" data-feather="download-cloud"></i>
+                    </a>
+                    @if(Auth::user()->usrdata->id_departamento != 35)
+                      <a class="btn waves-effect waves-light btn-outline-danger delete" id={{$archivo->id}}>
+                        <i class="feather-sm" data-feather="trash-2"></i>
+                      </a>
+                    @endif
+                  </div>
+                </form> 
+              @endif
+            @endforeach
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  @include('soporte.desplegables.adjuntar')
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -276,25 +333,33 @@
     function mostrarOcultarCampos() {
       var idEstatus = $('input[name="estatus"]:checked').val();
 
-      // Ocultar ambos campos por defecto
-      $('#campo_id_arq, #campo_id_op, #campo_id_pip').hide();
-      
-      // Eliminar el atributo required de los campos ocultos
-      $('#id_arq, #id_op, #id_pip').removeAttr('required');
+    // Ocultar campos que no tienen valor
+      if (!$('#id_arq').val()) {
+        $('#campo_id_arq').hide();
+        $('#id_arq').removeAttr('required');
+      }
+      if (!$('#id_op').val()) {
+        $('#campo_id_op').hide();
+        $('#id_op').removeAttr('required');
+      }
+      if (!$('#id_pip').val()) {
+        $('#campo_id_pip').hide();
+        $('#id_pip').removeAttr('required');
+      }
 
-      // Mostrar campo ID_OP si el ID_ESTATUS es 3
+    // Mostrar campo ID_PIP si el ID_ESTATUS es 2
       if (idEstatus == 2) {
         $('#campo_id_pip').show();
         $('#id_pip').attr('required', 'required');
       }
 
-      // Mostrar campo ID_OP si el ID_ESTATUS es 3
+    // Mostrar campo ID_OP si el ID_ESTATUS es 3
       if (idEstatus == 3) {
         $('#campo_id_op').show();
         $('#id_op').attr('required', 'required');
       }
 
-      // Mostrar campo ID_ARQ si el ID_ESTATUS es 4
+    // Mostrar campo ID_ARQ si el ID_ESTATUS es 4
       if (idEstatus == 4) {
         $('#campo_id_arq').show();
         $('#id_arq').attr('required', 'required');
@@ -312,39 +377,43 @@
 
   // Configuración para el contador de caracteres
   var maxLength = 250;
-    $('#Comentario').keyup(function() {
-      var length = $(this).val().length;
-      var remainingChars = maxLength - length;
-      $('#charCount').text(length + '/' + maxLength + ' caracteres');
+  $('#Comentario').keyup(function() {
+    var length = $(this).val().length;
+    var remainingChars = maxLength - length;
+    $('#charCount').text(length + '/' + maxLength + ' caracteres');
+    
+    // Cambiar el color a rojo si se alcanza el límite
+    if (length >= maxLength) {
+      $('#charCount').removeClass('text-muted').addClass('text-danger');
+      // Si deseas deshabilitar la entrada después de alcanzar el límite, puedes usar:
+      $(this).attr('maxlength', length);
+    } else {
+      // Restaurar el color predeterminado si no se alcanza el límite
+      $('#charCount').removeClass('text-danger').addClass('text-muted'); // Color predeterminado de texto
+    }
+  });
+
+  $(document).ready(function() {
+    $('.delete').on('click', function(e) {
+      e.preventDefault();
       
-      // Cambiar el color a rojo si se alcanza el límite
-      if (length >= maxLength) {
-        $('#charCount').removeClass('text-muted').addClass('text-danger');
-        // Si deseas deshabilitar la entrada después de alcanzar el límite, puedes usar:
-        $(this).attr('maxlength', length);
-      } else {
-        // Restaurar el color predeterminado si no se alcanza el límite
-        $('#charCount').removeClass('text-danger').addClass('text-muted'); // Color predeterminado de texto
-      }
+      var parent = $(this).parent().parent().attr('id');
+      //var parent = $(this).closest('.file-row').attr('id'); // Asume que .file-row es la clase contenedora del archivo
+      var idArchivo = $(this).attr('id'); // Obtener el ID directamente del atributo ID del enlace
+      
+      $.ajax({
+          headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+          type: "DELETE",
+          url: "file.borrar." + idArchivo, // URL de la ruta de borrado con el ID del archivo solamente
+          success: function(response) {
+              $('#' + parent).hide("slow");
+          },
+          error: function(xhr, status, error) {
+              console.error("Ocurrió un error: " + error);
+          }
+      });
     });
-  /*
-  $(document).ready(function () {
-    // Obtén los elementos select de sistema e incidencia
-    const $sistema = $('#sistema');
-    const $incidencia = $('#incidencia');
+  });
 
-    // Agrega un evento change al select de sistema
-    $sistema.on('change', function () {
-      const SistemaId = $sistema.val();
-
-      // Oculta todas las opciones de incidencia
-      $incidencia.find('option').hide();
-
-      // Muestra solo las opciones de incidencia relacionadas con el sistema seleccionado
-      $incidencia.find(`option[data-sistema="${SistemaId}"], option[data-sistema="0"]`).show();
-    });
-    // Dispara el evento change inicialmente para configurar las opciones de incidencia
-    $sistema.trigger('change');
-  });*/
 </script>
 @endsection

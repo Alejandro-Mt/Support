@@ -52,8 +52,8 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-            #$url = 'https://servicionotificaciones-67vdh6ftzq-uc.a.run.app/api/v1/messagenotification';
-            $url = 'https://api-seguridad-preproduction-mb3clvz7ya-uc.a.run.app/api/v2/login';
+            $url = 'https://api-seguridad-67vdh6ftzq-uc.a.run.app/api/v2/login';
+            #$url = 'https://api-seguridad-preproduction-mb3clvz7ya-uc.a.run.app/api/v2/login';
             $data = [
                 'idOrigen' => 1,
                 'idUsuarioOS' => '',
