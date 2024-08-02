@@ -119,19 +119,28 @@ class Ticket extends Model
     protected static function boot()
     {
         parent::boot();
-
+    
         static::creating(function ($ticket) {
             // Obtener el prefijo del rol seleccionado
             $prefijo = Auth::user()->usrdata->rol->prefijo;
             // Obtener el año actual y tomar los últimos 2 dígitos
             $anio = date('y');
-            // Obtener el máximo número autoincrementable actual con el mismo prefijo y año
-            $maxConsecutivo = Ticket::where('folio', 'like', "$prefijo%-$anio")->count('folio');
-            // Si no se encontró un número autoincrementable, establecerlo en 1; de lo contrario, incrementar en 1
-            $nextConsecutivo = ($maxConsecutivo) ? ((int)substr($maxConsecutivo, -3) + 1) : 1;
+            // Obtener el folio máximo actual con el mismo prefijo y año
+            $ultimoFolio = Ticket::where('folio', 'like', "$prefijo-%-$anio")
+                                ->orderBy('folio', 'desc')
+                                ->first();
+    
+            // Si no se encontró un folio, establecer el siguiente consecutivo en 1; de lo contrario, incrementar en 1
+            if ($ultimoFolio) {
+                $ultimoConsecutivo = (int)substr($ultimoFolio->folio, strlen($prefijo) + 1, 3);
+                $nextConsecutivo = $ultimoConsecutivo + 1;
+            } else {
+                $nextConsecutivo = 1;
+            }
+    
             // Crear el folio combinando el prefijo, el nuevo número autoincrementable y el año
             $ticket->folio = $prefijo . '-' . str_pad($nextConsecutivo, 3, '0', STR_PAD_LEFT) . '-' . $anio;
-
         });
     }
+
 }
