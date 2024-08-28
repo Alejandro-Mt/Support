@@ -46,13 +46,13 @@
       var _ref;
       return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
     },
-    /*success: function (file, response) {
+    success: function (file, response) {
       if (response && response.success) {
-        window.location.href = response.redirect_url;
+        window.location.reload(); 
       } else {
         console.log("No se recibió un fileId válido en la respuesta.");
       }
-    },*/
+    },
   };
 </script>
   

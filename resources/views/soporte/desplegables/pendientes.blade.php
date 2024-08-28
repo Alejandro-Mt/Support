@@ -26,9 +26,9 @@
                   <td>
                     {{$pendiente->folio}}
                   </td>
-                  <td data-bs-toggle="tooltip" title="{{ $pendiente->comentarioPadre() }}"> 
+                  <td data-bs-toggle="tooltip" title="{{ $pendiente->comentarioPadre() ? $pendiente->comentarioPadre() : '' }}"> 
                     <div style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">
-                      <div style="max-width: 300px;">{{$pendiente->comentarioPadre()}}</div>
+                      <div style="max-width: 300px;">{{ $pendiente->comentarioPadre() ? $pendiente->comentarioPadre() : '' }}</div>
                     </div>
                   </td>
                   <td>{{$pendiente->fecha_reporte}}</td>

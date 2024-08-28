@@ -239,7 +239,7 @@ function support_fields(data) {
         <label for="Sop">Sistema Operativo</label>
         <select class="form-control" required autofocus id="Sop" name="sop[]">
           <option value="">SELECCIONAR</option>
-          ${sos.map(sop => `<option value="${sop.id_sop}">${sop.nombre}</option>`).join('')}
+          ${sos.map(sop => `<option value="${sop.id_so}">${sop.nombre}</option>`).join('')}
         </select>
       </div>
       <div class="mb-3 col-md-2">
@@ -262,7 +262,7 @@ function support_fields(data) {
       </div>
       <div class="mb-3 col-md-2">
         <label for="estatus">Estatus</label>
-        <select class="form-control" required autofocus {{ Auth::user()->usrdata->id_rol == 3 ? 'disabled' : '' }} id="estatus" name="estatus[]">
+        <select class="form-control" required autofocus id="estatus" name="estatus[]">
           <option value="">SELECCIONAR</option>
           ${estatus.map(estado => `<option value="${estado.id_estatus}">${estado.nombre}</option>`).join('')}
         </select>

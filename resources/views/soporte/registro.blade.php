@@ -496,14 +496,27 @@
         $('#campo_id_arq').show();
         $('#id_arq').attr('required', 'required');
     }
-}
+  }
 
   // Llama a la función al cargar la página
   mostrarOcultarCampos();
 
-    // Configura un evento change para detectar cambios en el estado
+  // Configura un evento change para detectar cambios en el estado
   $('input[name="estatus"]').change(function () {
     mostrarOcultarCampos();
+  });
+  // VAlidacion de rol para verificacion de CC
+  $(document).ready(function() {
+    // Verifica si el rol del usuario es 1
+    const userRole = {{ Auth::user()->usrdata->id_rol }};
+    const selectElement = $('#id_cc');
+
+    if (userRole === 1) {
+      selectElement.attr('required', 'required');
+    } else {
+      console.log(userRole);
+      selectElement.removeAttr('required');
+    }
   });
 </script>
 
