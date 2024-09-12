@@ -70,7 +70,13 @@ class RegistroController extends Controller
         {
             $rol =Auth::user()->usrdata->rol->id_rol;
             $nivel = Estatus::where('id_estatus',$data['estatus'])->first();
-            if(!$nivel->nivel) {$nivel->nivel = 1;}
+            if(!$nivel->nivel) {
+                if($rol == 1){
+                    $nivel->nivel = 1;
+                }else{
+                    $nivel->nivel = 2;
+                }
+            }
             if($rol == 3){
                 $solicitante = User::where('email',Auth::user()->email)->first();
                 $fecha_soporte = now();
