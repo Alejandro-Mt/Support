@@ -73,29 +73,29 @@
     </tfoot>
   </table>
 </div>
-  <style>
-    .tooltip-inner {
-        background-color: black;
-        box-shadow: 0px 0px 4px black;
-        color: #f4f6f9;
-        max-width: 100%; 
-        opacity: 1 !important;
-        white-space: pre-line;
-        word-wrap: break-word;
-        text-align: left;
-    }
+<style>
+  .tooltip-inner {
+      background-color: black;
+      box-shadow: 0px 0px 4px black;
+      color: #f4f6f9;
+      max-width: 100%; 
+      opacity: 1 !important;
+      white-space: pre-line;
+      word-wrap: break-word;
+      text-align: left;
+  }
 
-    .tooltip.bs-tooltip-end .tooltip-arrow::before {
-      border-right-color: black
-    }
+  .tooltip.bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: black
+  }
 
-    /* Define los estilos para las filas pares */
-    .table-striped tbody tr:nth-child(even) {
-        background-color: #D4D4D4; /* Color para las filas pares */
-        color: darkgray
-    }
-    /* Define los estilos para las filas impares */
-    .table-striped tbody tr:nth-child(odd) {
-        background-color: #D4D4D4; /* Color para las filas impares */
-    }
-  </style>
+  /* Define los estilos para las filas pares */
+  .table-striped tbody tr:nth-child(even) {
+      background-color: #D4D4D4; /* Color para las filas pares */
+      color: darkgray
+  }
+  /* Define los estilos para las filas impares */
+  .table-striped tbody tr:nth-child(odd) {
+      background-color: #D4D4D4; /* Color para las filas impares */
+  }
+</style>

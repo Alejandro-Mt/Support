@@ -510,12 +510,14 @@
     // Verifica si el rol del usuario es 1
     const userRole = {{ Auth::user()->usrdata->id_rol }};
     const selectElement = $('#id_cc');
+    const respPip = $('#id_pip');
 
     if (userRole === 1) {
       selectElement.attr('required', 'required');
-    } else {
-      console.log(userRole);
-      selectElement.removeAttr('required');
+    } 
+    if (userRole === 2 || userRole === 4){
+      respPip.attr('required', 'required');
+      $('#campo_id_pip').show();
     }
   });
 </script>
