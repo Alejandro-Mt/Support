@@ -1,5 +1,4 @@
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/colreorder/1.5.4/css/colReorder.dataTables.min.css">
-<script type="text/javascript" src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+
 <div class="table-responsive tab-pane fade" id="Principal" role="tabpanel" aria-labelledby="pills-profile-tab">
   <table id="excel" class="table table-striped table-bordered display text-nowrap" style="width: 100%">
     <thead>
@@ -73,29 +72,3 @@
     </tfoot>
   </table>
 </div>
-<style>
-  .tooltip-inner {
-      background-color: black;
-      box-shadow: 0px 0px 4px black;
-      color: #f4f6f9;
-      max-width: 100%; 
-      opacity: 1 !important;
-      white-space: pre-line;
-      word-wrap: break-word;
-      text-align: left;
-  }
-
-  .tooltip.bs-tooltip-end .tooltip-arrow::before {
-    border-right-color: black
-  }
-
-  /* Define los estilos para las filas pares */
-  .table-striped tbody tr:nth-child(even) {
-      background-color: #D4D4D4; /* Color para las filas pares */
-      color: darkgray
-  }
-  /* Define los estilos para las filas impares */
-  .table-striped tbody tr:nth-child(odd) {
-      background-color: #D4D4D4; /* Color para las filas impares */
-  }
-</style>

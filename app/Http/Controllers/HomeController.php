@@ -48,9 +48,26 @@ class HomeController extends Controller
         $sistemas       = Sistema::all();
         $sistemasAcceso = AccesoSistema::where('id_user', Auth::user()->id_user)->pluck('id_sistema')->toArray();
         if(Auth::user()->usrdata->is_rol == 3){
-            $tabla      = Ticket::whereIn('id_solicitante', Auth::user()->id_user)->get();
+            $tabla = Ticket::where(function($query) {
+                $query->where('id_estatus', '!=', 5)
+                      ->orWhere(function($q) {
+                          $q->where('id_estatus', 5)
+                            ->whereMonth('created_at', now()->month)
+                            ->whereYear('created_at', now()->year);
+                      });
+            })
+            ->where('id_solicitante', Auth::user()->id_user)
+            ->get();
         }else{
-            $tabla      = Ticket::whereIn('id_sistema', $sistemasAcceso)->get();
+            $tabla = Ticket::where(function($query) {
+                $query->where('id_estatus', '!=', 5)
+                      ->orWhere(function($q) {
+                          $q->where('id_estatus', 5)
+                            ->whereMonth('created_at', now()->month)
+                            ->whereYear('created_at', now()->year);
+                      });
+            })
+            ->whereIn('id_sistema', $sistemasAcceso)->get();
         }
         $usuarios       = User::all();
         return view('principal',compact('clientes','departamentos','divisiones','incidencias','puestos','roles','sistemas','tabla','usuarios'));

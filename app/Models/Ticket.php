@@ -117,6 +117,14 @@ class Ticket extends Model
         return $this->belongsTo(User::class,'id_arq','id_user');
     }
 
+    // En tu modelo Ticket.php
+    public function scopePip()
+    {
+        return Ticket::where('id_pip', $this->id_pip)
+                 ->whereNotNull('id_pip')
+                 ->count('folio');
+    }
+
     protected static function boot()
     {
         parent::boot();
