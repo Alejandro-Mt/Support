@@ -45,7 +45,7 @@
     <div class="card">
       <button class="btn btn-light-primary font-weight-medium text-white px-4 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cards" aria-expanded="false" aria-controls="cards">
         <i data-feather="book" class="feather-sm"></i>
-        Valor
+        Resumen
       </button>
       <div id="cards" class="card-body collapse">
         <div class="d-flex justify-content-between align-items-center">
@@ -90,7 +90,7 @@
                     <ul class="overflow-auto mb-0 flex-grow-1" style="max-height: 3em;"> <!-- Lista expandible -->
                       @foreach ($tabla->whereNotNull('id_sistema')->groupBy('id_sistema') as $id_sistema => $ticketsPorSis)
                         <li class="d-flex justify-content-between">
-                          <a data-bs-toggle="tooltip" title="Sistema: {{ $ticketsPorSis->first()->incidencia->nombre }}" data-bs-placement="auto">
+                          <a data-bs-toggle="tooltip" title="Incidencia: {{ $ticketsPorSis->first()->incidencia->nombre }}" data-bs-placement="auto">
                             {{$ticketsPorSis->first()->sistema->nombre}}
                           </a>
                           <span>{{$ticketsPorSis->count()}}</span>
@@ -114,7 +114,7 @@
                     </div>
                   </div>
                   <div class="flex-grow-1 d-flex flex-column h-100 pe-3 py-3"> <!-- Área de contenido -->
-                    <h4 class="mb-2">De negocios cerrados</h4>
+                    <h4 class="mb-2">Soportes CC</h4>
                     <ul class="overflow-auto mb-0 flex-grow-1" style="max-height: 3em;">
                       @foreach ($tabla->whereNotNull('id_cc')->groupBy('id_cc') as $id_cc => $ticketsPorCC)
                         <li class="d-flex justify-content-between">
