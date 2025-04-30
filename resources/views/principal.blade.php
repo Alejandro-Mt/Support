@@ -28,16 +28,17 @@
       });
   </script>
 @endif
-<!--@ if(Auth::user()->id_puesto > 3)-->
+
 <!-- Script para mostrar el modal si hay registros -->
-@if(Auth::user()->Pendientes()->count() > 0)
-    <script>
-        $(document).ready(function() {
-            $('#Pendientes').modal('show');
-        });
-    </script>
-@endif
-<!--include('soporte.desplegables.pendientes')-->
+  @if(Auth::user()->Pendientes()->count() > 0)
+      <script>
+          $(document).ready(function() {
+              $('#Pendientes').modal('show');
+          });
+      </script>
+  @endif
+
+@include('soporte.desplegables.pendientes')
 
 <!-- Row  Resumen-->
 <div class="row">
